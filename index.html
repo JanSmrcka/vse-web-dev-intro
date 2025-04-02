@@ -8,6 +8,34 @@
   </head>
 
   <body>
+    <div class="container">
+      <header>
+        <h1>Můj seznam úkolů</h1>
+        <p class="subtitle">Přidejte si své úkoly</p>
+      </header>
+
+      <main>
+        <form id="todo-form">
+          <div class="input-group">
+            <input
+              name="todo-text"
+              id="new-todo-input"
+              placeholder="Co je potřeba udělat?"
+              autocomplete="off"
+            />
+            <button type="submit" id="add-btn">Přidat</button>
+          </div>
+        </form>
+
+        <div class="todo-container">
+          <ul id="todo-list"></ul>
+        </div>
+      </main>
+
+      <footer>
+        <p>Kliknutím na úkol ho označíte jako dokončený</p>
+      </footer>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
