@@ -2,7 +2,7 @@
 
 A simple task management application that we will build step by step. We'll start with the HTML structure and gradually add JavaScript functionality.
 
-This project is part of the **Web Programming Basics (4IT427)** course at the University of Economics in Prague.
+This project is part of the **React Programming Basics (4IT427)** course at the University of Economics in Prague.
 
 ## Table of Contents
 
