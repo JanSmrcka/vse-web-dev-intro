@@ -355,7 +355,7 @@ For...in cyklus se používá pro iteraci přes vlastnosti objektu.
 ## Užitečné odkazy
 
 - [MDN Web Docs - JavaScript](https://developer.mozilla.org/cs/docs/Web/JavaScript) - Oficiální dokumentace JavaScriptu
-- [MDN Web Docs - DOM](https://developer.mozilla.org/cs/docs/Web/API/Document_Object_Model) - Dokumentace DOM API
+- [MDN Web Docs - DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) - Dokumentace DOM API
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/) - Oficiální dokumentace TypeScriptu
 - [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/) - Interaktivní tutoriál JavaScriptu
 - [JavaScript.info](https://javascript.info/) - Moderní JavaScript tutoriál
