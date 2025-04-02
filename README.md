@@ -97,6 +97,13 @@ For detailed information about JavaScript and TypeScript concepts used in this p
 - [JavaScript Basics](javascript-basics.md) - Comprehensive guide to JavaScript fundamentals
 - [TypeScript Basics](typescript-basics.md) - Guide to TypeScript features and concepts
 
+### API Documentation
+
+This project uses a RESTful API for managing todos. The API is documented using Swagger UI:
+
+- [API Documentation](https://eli-workshop.vercel.app/api-docs) - Interactive API documentation
+- [Todos Endpoint](https://eli-workshop.vercel.app/api/todos) - Direct access to todos data
+
 ## How to Work with This Repository
 
 ### For Students
