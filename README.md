@@ -6,22 +6,80 @@ This project is part of the **Web Programming Basics (4IT427)** course at the Un
 
 ## Table of Contents
 
+- [JavaScript and TypeScript History](#javascript-and-typescript-history)
 - [Project Description](#project-description)
 - [How to Run the Project](#how-to-run-the-project)
+- [Why Vite?](#why-vite)
 - [HTML Structure](#html-structure)
 - [Basic JavaScript Functions](#basic-javascript-functions)
 - [Key JavaScript Concepts](#key-javascript-concepts)
+  - [Data Types](#data-types)
   - [Variables (let, var, const)](#variables-let-var-const)
   - [Functions (normal and arrow)](#functions-normal-and-arrow)
   - [Conditions](#conditions)
   - [Loops](#loops)
-  - [Data Types](#data-types)
   - [Operators](#operators)
   - [Objects and Classes](#objects-and-classes)
   - [Arrays](#arrays)
+  - [Set and Map](#set-and-map)
   - [Events](#events)
+  - [Document and Window Objects](#document-and-window-objects)
   - [Asynchronous Programming](#asynchronous-programming)
+  - [Polyfills](#polyfills)
 - [Useful Links](#useful-links)
+
+## JavaScript and TypeScript History
+
+### JavaScript Evolution
+
+JavaScript was created by Brendan Eich at Netscape in 1995. It was initially called Mocha, then LiveScript, and finally JavaScript. The language was created in just 10 days and was designed to be a simple scripting language for web browsers.
+
+Key milestones in JavaScript history:
+
+- 1995: JavaScript 1.0 released
+- 1997: ECMAScript 1 (First standardization)
+- 2009: ECMAScript 5 (Strict mode, JSON support)
+- 2015: ECMAScript 2015 (ES6) - Major update with classes, modules, promises
+- 2016+: Yearly releases with new features
+
+### TypeScript Introduction
+
+TypeScript was developed by Microsoft and first released in 2012. It's a superset of JavaScript that adds static typing. Key benefits include:
+
+- Static type checking
+- Better IDE support
+- Enhanced code documentation
+- Catch errors during development
+- Better maintainability for large projects
+
+TypeScript compiles to JavaScript, making it compatible with all JavaScript environments.
+
+## Why Vite?
+
+This project uses Vite as its build tool and development server. Vite offers several advantages:
+
+1. **Fast Development Server**
+
+   - Uses native ES modules
+   - No bundling during development
+   - Instant hot module replacement (HMR)
+
+2. **Optimized Production Builds**
+
+   - Automatic code splitting
+   - Efficient asset handling
+   - Modern JavaScript features support
+
+3. **TypeScript Support**
+
+   - Native TypeScript support
+   - Fast type checking
+   - No separate compilation step needed
+
+4. **Modern Development Experience**
+   - Built-in support for modern web features
+   - Simple configuration
+   - Excellent developer experience
 
 ## Project Description
 
@@ -781,6 +839,168 @@ async function fetchMultipleData() {
 ```
 
 `Promise.all()` allows running multiple Promises in parallel and waiting for all of them to complete.
+
+### Set and Map
+
+#### Set
+
+A Set is a collection of unique values. Each value can occur only once in a Set.
+
+```javascript
+// Creating a Set
+const uniqueNumbers = new Set([1, 2, 3, 3, 4, 4, 5]); // [1, 2, 3, 4, 5]
+
+// Adding values
+uniqueNumbers.add(6);
+uniqueNumbers.add(1); // Won't add duplicate
+
+// Checking values
+console.log(uniqueNumbers.has(3)); // true
+console.log(uniqueNumbers.size); // 6
+
+// Removing values
+uniqueNumbers.delete(3);
+
+// Iterating
+for (const number of uniqueNumbers) {
+  console.log(number);
+}
+
+// Converting to Array
+const array = [...uniqueNumbers];
+```
+
+#### Map
+
+A Map is a collection of key-value pairs where keys can be of any type.
+
+```javascript
+// Creating a Map
+const userMap = new Map();
+
+// Adding entries
+userMap.set("id", 1);
+userMap.set("name", "John");
+userMap.set({ key: "object" }, "value"); // Object as key
+
+// Getting values
+console.log(userMap.get("name")); // 'John'
+
+// Checking keys
+console.log(userMap.has("id")); // true
+
+// Removing entries
+userMap.delete("id");
+
+// Iterating
+for (const [key, value] of userMap) {
+  console.log(`${key}: ${value}`);
+}
+
+// Converting to Array
+const entries = [...userMap.entries()];
+```
+
+### Document and Window Objects
+
+#### Document Object
+
+The `document` object represents the web page and provides access to its content.
+
+```javascript
+// Selecting elements
+const element = document.getElementById("myId");
+const elements = document.getElementsByClassName("myClass");
+const elements = document.getElementsByTagName("div");
+const element = document.querySelector(".myClass");
+const elements = document.querySelectorAll(".myClass");
+
+// Creating elements
+const div = document.createElement("div");
+div.textContent = "Hello World";
+document.body.appendChild(div);
+
+// Modifying elements
+element.style.color = "red";
+element.classList.add("active");
+element.setAttribute("data-id", "123");
+
+// Event handling
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Document loaded");
+});
+```
+
+#### Window Object
+
+The `window` object represents the browser window and provides global functions and properties.
+
+```javascript
+// Window properties
+console.log(window.innerWidth); // Window width
+console.log(window.innerHeight); // Window height
+console.log(window.location.href); // Current URL
+
+// Window methods
+window.scrollTo(0, 100); // Scroll to position
+window.alert("Hello"); // Show alert
+window.confirm("Continue?"); // Show confirmation
+window.prompt("Enter name"); // Show prompt
+
+// Timing functions
+const timeoutId = setTimeout(() => {
+  console.log("After 1 second");
+}, 1000);
+
+const intervalId = setInterval(() => {
+  console.log("Every second");
+}, 1000);
+
+// Clearing timers
+clearTimeout(timeoutId);
+clearInterval(intervalId);
+```
+
+### Polyfills
+
+Polyfills are code that implements a feature on web browsers that don't support the feature natively. They "fill in" the gaps in browser support.
+
+```javascript
+// Example: Array.prototype.includes polyfill
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (searchElement, fromIndex) {
+    if (this == null) {
+      throw new TypeError('"this" is null or undefined');
+    }
+
+    var o = Object(this);
+    var len = o.length >>> 0;
+
+    if (len === 0) {
+      return false;
+    }
+
+    var n = fromIndex | 0;
+    var k = Math.max(n >= 0 ? n : len + n, 0);
+
+    while (k < len) {
+      if (o[k] === searchElement) {
+        return true;
+      }
+      k++;
+    }
+    return false;
+  };
+}
+```
+
+Common use cases for polyfills:
+
+1. Supporting new JavaScript features in older browsers
+2. Implementing missing browser APIs
+3. Ensuring consistent behavior across browsers
+
+Modern development often uses tools like Babel to automatically handle polyfills, but understanding how they work is important for legacy code maintenance and debugging.
 
 ## Useful Links
 
