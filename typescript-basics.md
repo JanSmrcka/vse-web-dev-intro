@@ -24,22 +24,25 @@ TypeScript includes all the basic types from JavaScript plus additional type def
 
 ```typescript
 // Boolean - represents true/false values
+// Use boolean type when you need to represent a logical value
 let isDone: boolean = false;
 let isActive: boolean = true;
 
 // Number - represents both integer and floating-point numbers
+// TypeScript supports various number formats including decimal, hex, binary, and octal
 let decimal: number = 6;
-let hex: number = 0xf00d; // Hexadecimal
-let binary: number = 0b1010; // Binary
-let octal: number = 0o744; // Octal
-let float: number = 3.14; // Floating point
-let scientific: number = 3.14e2; // Scientific notation
+let hex: number = 0xf00d; // Hexadecimal number (61453 in decimal)
+let binary: number = 0b1010; // Binary number (10 in decimal)
+let octal: number = 0o744; // Octal number (484 in decimal)
+let float: number = 3.14; // Floating point number
+let scientific: number = 3.14e2; // Scientific notation (314)
 
 // String - represents text data
+// TypeScript supports both single quotes, double quotes, and template literals
 let color: string = "blue";
 let fullName: string = `Bob Bobbington`;
 let age: number = 37;
-// Template literals allow embedding expressions
+// Template literals allow embedding expressions using ${}
 let sentence: string = `Hello, my name is ${fullName}. I'll be ${
   age + 1
 } years old next month.`;
@@ -49,17 +52,20 @@ let sentence: string = `Hello, my name is ${fullName}. I'll be ${
 
 ```typescript
 // Array - represents a list of values
-let list: number[] = [1, 2, 3];
-let list2: Array<number> = [1, 2, 3]; // Generic array type
+// TypeScript provides two ways to declare array types
+let list: number[] = [1, 2, 3]; // Using square brackets
+let list2: Array<number> = [1, 2, 3]; // Using generic array type
 let mixed: (string | number)[] = ["hello", 42]; // Union type array
 
 // Tuple - represents an array with a fixed number of elements
+// Each element can have a different type
 let x: [string, number];
-x = ["hello", 10]; // OK
+x = ["hello", 10]; // OK - matches the type definition
 x = [10, "hello"]; // Error - type mismatch
 x = ["hello", 10, "world"]; // Error - too many elements
 
 // Enum - represents a set of named constants
+// Enums can be numeric or string-based
 enum Color {
   Red,
   Green,
@@ -71,6 +77,7 @@ let favoriteColor: Color = Color.Blue;
 console.log(Color[favoriteColor]); // "Blue"
 
 // Any - represents any type (use sparingly)
+// 'any' type should be avoided when possible as it bypasses type checking
 let notSure: any = 4;
 notSure = "maybe a string";
 notSure = false;
@@ -81,6 +88,7 @@ function processData(data: any) {
 }
 
 // Void - represents the absence of a type
+// Commonly used for functions that don't return a value
 function warnUser(): void {
   console.log("This is my warning message");
 }
@@ -88,13 +96,14 @@ function warnUser(): void {
 let unusable: void = undefined;
 
 // Null and Undefined - represent null and undefined values
+// These types are subtypes of all other types
 let u: undefined = undefined;
 let n: null = null;
-// These types are subtypes of all other types
 let num: number = undefined; // OK
 let str: string = null; // OK
 
 // Never - represents values that never occur
+// Useful for functions that always throw an error
 function error(message: string): never {
   throw new Error(message);
 }
@@ -104,9 +113,10 @@ function exhaustiveCheck(x: never): never {
 }
 
 // Object - represents any non-primitive type
+// Use this type when you want to accept any non-primitive value
 declare function create(o: object | null): void;
-create({ prop: 0 }); // OK
-create(null); // OK
+create({ prop: 0 }); // OK - object literal
+create(null); // OK - null
 create(42); // Error - number is a primitive type
 ```
 
@@ -116,6 +126,7 @@ TypeScript allows you to explicitly specify types for variables, function parame
 
 ```typescript
 // Variable type annotations
+// Explicitly declaring types for variables
 let name: string = "John";
 let age: number = 30;
 let isStudent: boolean = true;
@@ -123,34 +134,39 @@ let hobbies: string[] = ["reading", "gaming"];
 let person: { name: string; age: number } = { name: "John", age: 30 };
 
 // Function parameter and return type annotations
+// Specify types for parameters and return value
 function add(x: number, y: number): number {
   return x + y;
 }
 
 // Optional parameters - marked with ?
+// Parameters that may or may not be provided
 function buildName(firstName: string, lastName?: string): string {
   if (lastName) {
     return firstName + " " + lastName;
   }
   return firstName;
 }
-buildName("John"); // OK
-buildName("John", "Doe"); // OK
+buildName("John"); // OK - lastName is optional
+buildName("John", "Doe"); // OK - lastName is provided
 
 // Default parameters - provide default values
+// Parameters with default values
 function buildName2(firstName: string, lastName: string = "Smith"): string {
   return firstName + " " + lastName;
 }
-buildName2("John"); // "John Smith"
-buildName2("John", "Doe"); // "John Doe"
+buildName2("John"); // "John Smith" - uses default value
+buildName2("John", "Doe"); // "John Doe" - overrides default value
 
 // Rest parameters - collect remaining arguments
+// Collects all remaining arguments into an array
 function buildName3(firstName: string, ...restOfName: string[]): string {
   return firstName + " " + restOfName.join(" ");
 }
 buildName3("John", "Doe", "Smith"); // "John Doe Smith"
 
 // Function type annotations
+// Define types for function expressions
 type MathFunc = (x: number, y: number) => number;
 const multiply: MathFunc = (x, y) => x * y;
 ```
@@ -161,6 +177,7 @@ Interfaces define contracts for object shapes. They are powerful tools for defin
 
 ```typescript
 // Basic interface
+// Defines the shape of an object with required properties
 interface User {
   name: string;
   age: number;
@@ -168,14 +185,16 @@ interface User {
 const user: User = { name: "John", age: 30 };
 
 // Optional properties - marked with ?
+// Properties that may or may not be present
 interface SquareConfig {
   color?: string;
   width?: number;
 }
 const config: SquareConfig = { color: "red" }; // OK
-const config2: SquareConfig = {}; // OK
+const config2: SquareConfig = {}; // OK - all properties are optional
 
 // Read-only properties - marked with readonly
+// Properties that cannot be modified after initialization
 interface Point {
   readonly x: number;
   readonly y: number;
@@ -184,17 +203,23 @@ const point: Point = { x: 10, y: 20 };
 point.x = 20; // Error - cannot modify readonly property
 
 // Function types
+// Define the shape of a function
 interface SearchFunc {
   (source: string, subString: string): boolean;
 }
+const search: SearchFunc = (source, subString) => {
+  return source.includes(subString);
+};
 
 // Class types
+// Define the shape of a class
 interface ClockInterface {
   currentTime: Date;
   setTime(d: Date): void;
 }
 
 // Extending interfaces
+// Create new interfaces by extending existing ones
 interface Shape {
   color: string;
 }
@@ -204,6 +229,7 @@ interface Square extends Shape {
 const square: Square = { color: "red", sideLength: 10 };
 
 // Implementing interfaces
+// Classes can implement interfaces
 class Clock implements ClockInterface {
   currentTime: Date = new Date();
   setTime(d: Date) {
@@ -212,6 +238,7 @@ class Clock implements ClockInterface {
 }
 
 // Interface merging
+// Interfaces with the same name are merged
 interface Box {
   height: number;
   width: number;
@@ -233,6 +260,7 @@ Type aliases create new names for types. They are similar to interfaces but can 
 
 ```typescript
 // Basic type aliases
+// Create new names for existing types
 type Name = string;
 type NameResolver = () => string;
 type NameOrResolver = Name | NameResolver;
@@ -246,11 +274,13 @@ function getName(n: NameOrResolver): Name {
 }
 
 // Generic types
+// Create reusable type aliases with type parameters
 type Container<T> = { value: T };
 const numberContainer: Container<number> = { value: 42 };
 const stringContainer: Container<string> = { value: "hello" };
 
 // Union types
+// Create types that can be one of several types
 type StringOrNumber = string | number;
 function process(value: StringOrNumber) {
   if (typeof value === "string") {
@@ -260,6 +290,7 @@ function process(value: StringOrNumber) {
 }
 
 // Intersection types
+// Combine multiple types into one
 type Combined = { id: number } & { name: string };
 const combined: Combined = { id: 1, name: "John" };
 
@@ -280,6 +311,7 @@ Generics allow you to write reusable components that work with multiple types. T
 
 ```typescript
 // Generic function
+// Create functions that work with multiple types
 function identity<T>(arg: T): T {
   return arg;
 }
@@ -287,12 +319,14 @@ const num = identity<number>(42);
 const str = identity<string>("hello");
 
 // Generic interface
+// Create interfaces that work with multiple types
 interface GenericIdentityFn<T> {
   (arg: T): T;
 }
 const myIdentity: GenericIdentityFn<number> = identity;
 
 // Generic class
+// Create classes that work with multiple types
 class GenericNumber<T> {
   zeroValue!: T;
   add!: (x: T, y: T) => T;
@@ -302,6 +336,7 @@ numberClass.zeroValue = 0;
 numberClass.add = (x, y) => x + y;
 
 // Generic constraints
+// Restrict the types that can be used with generics
 interface Lengthwise {
   length: number;
 }
@@ -309,11 +344,12 @@ function loggingIdentity<T extends Lengthwise>(arg: T): T {
   console.log(arg.length);
   return arg;
 }
-loggingIdentity("hello"); // OK
-loggingIdentity([1, 2, 3]); // OK
+loggingIdentity("hello"); // OK - string has length
+loggingIdentity([1, 2, 3]); // OK - array has length
 loggingIdentity(42); // Error - number doesn't have length
 
 // Using class types in generics
+// Create instances of classes using generics
 function create<T>(c: { new (): T }): T {
   return new c();
 }
@@ -321,6 +357,7 @@ class Example {}
 const example = create(Example);
 
 // Generic constraints with multiple types
+// Restrict generics to types that implement multiple interfaces
 interface Printable {
   print(): void;
 }
@@ -340,6 +377,7 @@ Enums allow you to define a set of named constants. They can be numeric or strin
 
 ```typescript
 // Numeric enums
+// Automatically increment values if not specified
 enum Direction {
   Up = 1,
   Down,
@@ -352,28 +390,54 @@ enum Direction {
 // Direction.Right = 4
 
 // String enums
+// Each member must be explicitly initialized
 enum Direction2 {
   Up = "UP",
   Down = "DOWN",
   Left = "LEFT",
   Right = "RIGHT",
 }
-// Each enum member must be explicitly initialized
 
 // Heterogeneous enums
+// Mix of numeric and string values (not recommended)
 enum BooleanLikeHeterogeneousEnum {
   No = 0,
   Yes = "YES",
 }
-// Not recommended - makes code harder to understand
 
 // Computed and constant members
+// Use bitwise operations for flags
 enum FileAccess {
   None,
   Read = 1 << 1,
   Write = 1 << 2,
   ReadWrite = Read | Write,
 }
+
+// Bitwise Operators Explanation
+// << (Left Shift) - shifts bits to the left
+// Example: 1 << 1
+// Binary: 0001 -> 0010 (1 -> 2 in decimal)
+// 1 << 2 means shift 1 two bits to the left
+// Binary: 0001 -> 0100 (1 -> 4 in decimal)
+//
+// >> (Right Shift) - shifts bits to the right
+// Example: 4 >> 1
+// Binary: 0100 -> 0010 (4 -> 2 in decimal)
+//
+// | (Bitwise OR) - combines bits
+// Example: 2 | 4
+// Binary: 0010 | 0100 = 0110 (2 | 4 = 6 in decimal)
+//
+// In the FileAccess enum:
+// None = 0      (0000) - no permissions
+// Read = 2      (0010) - read permission
+// Write = 4     (0100) - write permission
+// ReadWrite = 6 (0110) - both read and write permissions
+//
+// This is commonly used for creating "bit masks" or "flags"
+// where each bit represents a specific permission or property.
+// It's an efficient way to store multiple boolean values in a single number.
 
 // Using enums
 function move(direction: Direction) {
@@ -387,6 +451,25 @@ function move(direction: Direction) {
     // ... handle other cases
   }
 }
+
+// Example of using bitwise flags
+function checkFileAccess(access: FileAccess) {
+  if (access & FileAccess.Read) {
+    console.log("Can read");
+  }
+  if (access & FileAccess.Write) {
+    console.log("Can write");
+  }
+}
+
+// Usage examples
+const readOnly = FileAccess.Read; // 2 (0010)
+const writeOnly = FileAccess.Write; // 4 (0100)
+const readWrite = FileAccess.ReadWrite; // 6 (0110)
+
+checkFileAccess(readOnly); // "Can read"
+checkFileAccess(writeOnly); // "Can write"
+checkFileAccess(readWrite); // "Can read" "Can write"
 ```
 
 ## Type Assertions
