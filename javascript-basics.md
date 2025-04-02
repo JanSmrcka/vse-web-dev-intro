@@ -790,3 +790,16 @@ Common use cases for polyfills:
 3. Ensuring consistent behavior across browsers
 
 Modern development often uses tools like Babel to automatically handle polyfills, but understanding how they work is important for legacy code maintenance and debugging.
+
+## Useful Links
+
+- [MDN Web Docs - JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Official JavaScript documentation
+- [MDN Web Docs - DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) - DOM API documentation
+- [MDN Web Docs - Events](https://developer.mozilla.org/en-US/docs/Web/Events) - Event handling documentation
+- [MDN Web Docs - Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) - Promise API documentation
+- [MDN Web Docs - async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) - async/await documentation
+- [JavaScript.info](https://javascript.info/) - Modern JavaScript tutorial
+- [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/) - Interactive JavaScript tutorial
+- [ECMAScript Specification](https://tc39.es/ecma262/) - Official ECMAScript specification
+- [Can I Use](https://caniuse.com/) - Browser compatibility tables
+- [JavaScript Weekly](https://javascriptweekly.com/) - Weekly JavaScript newsletter
