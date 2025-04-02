@@ -2,6 +2,8 @@
 
 Jednoduchá aplikace pro správu úkolů, kterou budeme vytvářet krok za krokem. Začneme s HTML strukturou a postupně budeme přidávat JavaScript funkcionalitu.
 
+Tento projekt je součástí kurzu **Základy programování v Reactu (4IT427)** na Vysoké škole ekonomické v Praze.
+
 ## Obsah
 
 - [Popis projektu](#popis-projektu)
@@ -9,6 +11,7 @@ Jednoduchá aplikace pro správu úkolů, kterou budeme vytvářet krok za kroke
 - [Struktura HTML](#struktura-html)
 - [Základní funkce JavaScriptu](#základní-funkce-javascriptu)
 - [Klíčové koncepty JavaScriptu](#klíčové-koncepty-javascriptu)
+  - [Datové typy](#datové-typy)
   - [Proměnné (let, var, const)](#proměnné-let-var-const)
   - [Funkce (normální a arrow)](#funkce-normální-a-arrow)
   - [Podmínky](#podmínky)
@@ -163,6 +166,115 @@ Vlastnost `innerHTML` umožňuje nastavit nebo získat HTML obsah elementu. Nast
 
 ## Klíčové koncepty JavaScriptu
 
+### Datové typy
+
+JavaScript má několik základních datových typů:
+
+#### Primitivní typy
+
+```javascript
+// String (řetězec)
+const text = "Ahoj světe";
+
+// Number (číslo)
+const cislo = 42;
+const desetinne = 3.14;
+
+// Boolean (logická hodnota)
+const jePravda = true;
+const jeNepravda = false;
+
+// Undefined (nedefinovaná hodnota)
+let nedefinovano;
+console.log(nedefinovano); // undefined
+
+// Null (prázdná hodnota)
+const prazdno = null;
+
+// Symbol (unikátní identifikátor)
+const symbol = Symbol("popis");
+
+// BigInt (velká celá čísla)
+const velkeCislo = 9007199254740991n;
+```
+
+#### Objekty
+
+```javascript
+// Objekt
+const osoba = {
+  jmeno: "Jan",
+  vek: 30,
+  adresa: {
+    ulice: "Hlavní 123",
+    mesto: "Praha",
+  },
+};
+
+// Pole (speciální typ objektu)
+const barvy = ["červená", "zelená", "modrá"];
+```
+
+### Operátory
+
+JavaScript podporuje různé typy operátorů:
+
+#### Aritmetické operátory
+
+```javascript
+const a = 10;
+const b = 5;
+
+console.log(a + b); // Sčítání: 15
+console.log(a - b); // Odčítání: 5
+console.log(a * b); // Násobení: 50
+console.log(a / b); // Dělení: 2
+console.log(a % b); // Modulo (zbytek po dělení): 0
+console.log(a ** b); // Umocnění: 100000
+console.log(a++); // Inkrementace: 10 (vrátí hodnotu a pak zvýší)
+console.log(++a); // Inkrementace: 12 (zvýší a pak vrátí hodnotu)
+console.log(b--); // Dekrementace: 5 (vrátí hodnotu a pak sníží)
+console.log(--b); // Dekrementace: 3 (sníží a pak vrátí hodnotu)
+```
+
+#### Porovnávací operátory
+
+```javascript
+console.log(5 == "5"); // Rovná se (typová konverze): true
+console.log(5 === "5"); // Rovná se (bez typové konverze): false
+console.log(5 != "5"); // Nerovná se (typová konverze): false
+console.log(5 !== "5"); // Nerovná se (bez typové konverze): true
+console.log(5 > 3); // Větší než: true
+console.log(5 >= 5); // Větší nebo rovno: true
+console.log(3 < 5); // Menší než: true
+console.log(5 <= 5); // Menší nebo rovno: true
+```
+
+#### Logické operátory
+
+```javascript
+console.log(true && true); // AND: true
+console.log(true && false); // AND: false
+console.log(true || false); // OR: true
+console.log(false || false); // OR: false
+console.log(!true); // NOT: false
+```
+
+#### Operátor nullish coalescing (??)
+
+```javascript
+const hodnota = null;
+const vychozi = hodnota ?? "výchozí hodnota"; // "výchozí hodnota"
+```
+
+#### Operátor optional chaining (?.)
+
+```javascript
+const osoba = { adresa: { mesto: "Praha" } };
+console.log(osoba?.adresa?.mesto); // "Praha"
+console.log(osoba?.kontakt?.email); // undefined (bez chyby)
+```
+
 ### Proměnné (let, var, const)
 
 JavaScript nabízí tři způsoby deklarace proměnných:
@@ -199,6 +311,132 @@ const z = 30;
 - Žádný hoisting
 - Nemůže být změněna ani znovu deklarována
 - Doporučený způsob deklarace konstant
+
+### Objekty a třídy
+
+JavaScript je objektově orientovaný jazyk, který podporuje práci s objekty a třídami.
+
+#### Objekty
+
+```javascript
+// Vytvoření objektu pomocí literálu
+const osoba = {
+  jmeno: "Jan",
+  vek: 30,
+  pozdravit: function () {
+    return `Ahoj, jsem ${this.jmeno}`;
+  },
+};
+
+// Přístup k vlastnostem
+console.log(osoba.jmeno); // "Jan"
+console.log(osoba["vek"]); // 30
+console.log(osoba.pozdravit()); // "Ahoj, jsem Jan"
+
+// Přidání nové vlastnosti
+osoba.povolani = "programátor";
+
+// Smazání vlastnosti
+delete osoba.vek;
+```
+
+#### Třídy
+
+```javascript
+// Definice třídy
+class Osoba {
+  constructor(jmeno, vek) {
+    this.jmeno = jmeno;
+    this.vek = vek;
+  }
+
+  pozdravit() {
+    return `Ahoj, jsem ${this.jmeno}`;
+  }
+
+  // Statická metoda
+  static vytvorAnonymni() {
+    return new Osoba("Anonym", 0);
+  }
+}
+
+// Vytvoření instance
+const jan = new Osoba("Jan", 30);
+console.log(jan.pozdravit()); // "Ahoj, jsem Jan"
+
+// Dědičnost
+class Programator extends Osoba {
+  constructor(jmeno, vek, jazyk) {
+    super(jmeno, vek);
+    this.jazyk = jazyk;
+  }
+
+  programovat() {
+    return `${this.jmeno} programuje v ${this.jazyk}`;
+  }
+}
+
+const programator = new Programator("Jan", 30, "JavaScript");
+console.log(programator.programovat()); // "Jan programuje v JavaScript"
+```
+
+### Pole (Arrays)
+
+Pole v JavaScriptu jsou speciální typ objektu, který umožňuje ukládat a zpracovávat kolekce hodnot.
+
+```javascript
+// Vytvoření pole
+const barvy = ["červená", "zelená", "modrá"];
+
+// Přístup k prvkům
+console.log(barvy[0]); // "červená"
+console.log(barvy.length); // 3
+
+// Přidání prvku na konec
+barvy.push("žlutá");
+console.log(barvy); // ["červená", "zelená", "modrá", "žlutá"]
+
+// Odstranění posledního prvku
+const posledni = barvy.pop();
+console.log(posledni); // "žlutá"
+console.log(barvy); // ["červená", "zelená", "modrá"]
+
+// Přidání prvku na začátek
+barvy.unshift("bílá");
+console.log(barvy); // ["bílá", "červená", "zelená", "modrá"]
+
+// Odstranění prvního prvku
+const prvni = barvy.shift();
+console.log(prvni); // "bílá"
+console.log(barvy); // ["červená", "zelená", "modrá"]
+
+// Metody pro práci s poli
+const cisla = [1, 2, 3, 4, 5];
+
+// map - transformace každého prvku
+const dvojnasobek = cisla.map((cislo) => cislo * 2);
+console.log(dvojnasobek); // [2, 4, 6, 8, 10]
+
+// filter - filtrování prvků podle podmínky
+const suda = cisla.filter((cislo) => cislo % 2 === 0);
+console.log(suda); // [2, 4]
+
+// reduce - redukce pole na jednu hodnotu
+const soucet = cisla.reduce((akumulator, cislo) => akumulator + cislo, 0);
+console.log(soucet); // 15
+
+// find - nalezení prvního prvku splňujícího podmínku
+const vetsiNezTri = cisla.find((cislo) => cislo > 3);
+console.log(vetsiNezTri); // 4
+
+// some - zjištění, zda alespoň jeden prvek splňuje podmínku
+const obsahujeTri = cisla.some((cislo) => cislo === 3);
+console.log(obsahujeTri); // true
+
+// every - zjištění, zda všechny prvky splňují podmínku
+const vsechnyVetsiNezNula = cisla.every((cislo) => cislo > 0);
+console.log(vsechnyVetsiNezNula); // true
+```
 
 ### Funkce (normální a arrow)
 
@@ -351,6 +589,193 @@ for (const klíč in objekt) {
 ```
 
 For...in cyklus se používá pro iteraci přes vlastnosti objektu.
+
+### Události (Events)
+
+JavaScript umožňuje reagovat na různé události, které se dějí v prohlížeči.
+
+#### Základní události
+
+```javascript
+// Události myši
+element.addEventListener("click", function (event) {
+  console.log("Kliknutí na element");
+});
+
+element.addEventListener("mouseover", function (event) {
+  console.log("Myš je nad elementem");
+});
+
+element.addEventListener("mouseout", function (event) {
+  console.log("Myš opustila element");
+});
+
+// Události klávesnice
+document.addEventListener("keydown", function (event) {
+  console.log(`Stisknuta klávesa: ${event.key}`);
+});
+
+// Události formuláře
+form.addEventListener("submit", function (event) {
+  event.preventDefault(); // Zabránění výchozímu chování (odeslání formuláře)
+  console.log("Formulář byl odeslán");
+});
+
+input.addEventListener("change", function (event) {
+  console.log(`Hodnota změněna na: ${event.target.value}`);
+});
+
+// Události okna
+window.addEventListener("load", function () {
+  console.log("Stránka byla načtena");
+});
+
+window.addEventListener("resize", function () {
+  console.log(`Velikost okna: ${window.innerWidth}x${window.innerHeight}`);
+});
+```
+
+#### Event objekt
+
+Když se událost spustí, JavaScript vytvoří objekt události, který obsahuje informace o události.
+
+```javascript
+element.addEventListener("click", function (event) {
+  console.log(event.type); // "click"
+  console.log(event.target); // Element, na který bylo kliknuto
+  console.log(event.clientX); // X souřadnice kliknutí
+  console.log(event.clientY); // Y souřadnice kliknutí
+  console.log(event.preventDefault); // Funkce pro zabránění výchozímu chování
+  console.log(event.stopPropagation); // Funkce pro zastavení šíření události
+});
+```
+
+#### Delegování událostí
+
+Delegování událostí je technika, při které se událost zachytí na nadřazeném elementu a zpracuje se podle cílového elementu.
+
+```javascript
+// Místo přidávání události na každý element
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    console.log("Kliknutí na tlačítko");
+  });
+});
+
+// Použijeme delegování událostí
+const container = document.querySelector(".container");
+container.addEventListener("click", function (event) {
+  if (event.target.tagName === "BUTTON") {
+    console.log("Kliknutí na tlačítko");
+  }
+});
+```
+
+### Asynchronní programování
+
+JavaScript je jednovláknový jazyk, což znamená, že může provádět pouze jeden blok kódu najednou. Asynchronní programování umožňuje provádět dlouhotrvající operace bez blokování hlavního vlákna.
+
+#### Callback funkce
+
+```javascript
+function fetchData(callback) {
+  setTimeout(() => {
+    const data = { name: "John", age: 30 };
+    callback(data);
+  }, 1000);
+}
+
+fetchData((data) => {
+  console.log(data); // { name: "John", age: 30 }
+});
+```
+
+Callback funkce jsou předávány jako argumenty jiným funkcím a jsou volány po dokončení operace. Mohou vést k "callback hell" (vnořené callbacky), což ztěžuje čtení a údržbu kódu.
+
+#### Promises
+
+Promise je objekt, který představuje dokončení (nebo selhání) asynchronní operace a její výslednou hodnotu.
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+  // Asynchronní operace
+  const success = true;
+
+  if (success) {
+    resolve({ name: "John", age: 30 });
+  } else {
+    reject(new Error("Operace selhala"));
+  }
+});
+
+promise
+  .then((data) => {
+    console.log(data); // { name: "John", age: 30 }
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+Promise má tři stavy:
+
+- **Pending (čekající)**: Počáteční stav, operace ještě není dokončena
+- **Fulfilled (splněná)**: Operace byla úspěšně dokončena
+- **Rejected (zamítnutá)**: Operace selhala
+
+#### async/await
+
+`async/await` je syntaktický cukr nad Promises, který umožňuje psát asynchronní kód v synchronním stylu.
+
+```javascript
+async function fetchData() {
+  try {
+    const response = await fetch("https://api.example.com/data");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Chyba při načítání dat:", error);
+    throw error;
+  }
+}
+
+// Použití
+fetchData()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+Klíčová slova:
+
+- `async` před funkcí označuje, že funkce vrací Promise
+- `await` může být použito pouze uvnitř `async` funkce a čeká na dokončení Promise
+- `try/catch` blok umožňuje zachytit chyby v asynchronním kódu
+
+#### Paralelní zpracování
+
+```javascript
+async function fetchMultipleData() {
+  try {
+    // Paralelní zpracování více Promise
+    const [data1, data2] = await Promise.all([
+      fetch("https://api.example.com/data1").then((res) => res.json()),
+      fetch("https://api.example.com/data2").then((res) => res.json()),
+    ]);
+
+    return { data1, data2 };
+  } catch (error) {
+    console.error("Chyba při načítání dat:", error);
+    throw error;
+  }
+}
+```
+
+`Promise.all()` umožňuje spustit více Promise paralelně a počkat na dokončení všech z nich.
 
 ## Užitečné odkazy
 
