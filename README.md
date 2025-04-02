@@ -1,65 +1,70 @@
-# Seznam úkolů (Todo App)
+# Todo App
 
-Jednoduchá aplikace pro správu úkolů, kterou budeme vytvářet krok za krokem. Začneme s HTML strukturou a postupně budeme přidávat JavaScript funkcionalitu.
+A simple task management application that we will build step by step. We'll start with the HTML structure and gradually add JavaScript functionality.
 
-Tento projekt je součástí kurzu **Základy programování v Reactu (4IT427)** na Vysoké škole ekonomické v Praze.
+This project is part of the **Web Programming Basics (4IT427)** course at the University of Economics in Prague.
 
-## Obsah
+## Table of Contents
 
-- [Popis projektu](#popis-projektu)
-- [Jak spustit projekt](#jak-spustit-projekt)
-- [Struktura HTML](#struktura-html)
-- [Základní funkce JavaScriptu](#základní-funkce-javascriptu)
-- [Klíčové koncepty JavaScriptu](#klíčové-koncepty-javascriptu)
-  - [Datové typy](#datové-typy)
-  - [Proměnné (let, var, const)](#proměnné-let-var-const)
-  - [Funkce (normální a arrow)](#funkce-normální-a-arrow)
-  - [Podmínky](#podmínky)
-  - [Cykly](#cykly)
-- [Užitečné odkazy](#užitečné-odkazy)
+- [Project Description](#project-description)
+- [How to Run the Project](#how-to-run-the-project)
+- [HTML Structure](#html-structure)
+- [Basic JavaScript Functions](#basic-javascript-functions)
+- [Key JavaScript Concepts](#key-javascript-concepts)
+  - [Variables (let, var, const)](#variables-let-var-const)
+  - [Functions (normal and arrow)](#functions-normal-and-arrow)
+  - [Conditions](#conditions)
+  - [Loops](#loops)
+  - [Data Types](#data-types)
+  - [Operators](#operators)
+  - [Objects and Classes](#objects-and-classes)
+  - [Arrays](#arrays)
+  - [Events](#events)
+  - [Asynchronous Programming](#asynchronous-programming)
+- [Useful Links](#useful-links)
 
-## Popis projektu
+## Project Description
 
-V tomto projektu budeme společně vytvářet jednoduchou aplikaci pro správu úkolů. Začneme s HTML strukturou, která bude obsahovat formulář pro přidání nových úkolů a seznam pro jejich zobrazení. Poté budeme postupně přidávat JavaScript funkcionalitu, která umožní:
+In this project, we will together create a simple task management application. We'll start with the HTML structure, which will include a form for adding new tasks and a list for displaying them. Then we'll gradually add JavaScript functionality that will allow:
 
-- Přidávat nové úkoly
-- Označovat úkoly jako dokončené
-- Mazat úkoly
-- Zobrazovat seznam všech úkolů
+- Adding new tasks
+- Marking tasks as completed
+- Deleting tasks
+- Displaying a list of all tasks
 
-Tento přístup vám pomůže pochopit, jak JavaScript interaguje s HTML a jak můžeme postupně přidávat funkcionalitu k základní HTML struktuře.
+This approach will help you understand how JavaScript interacts with HTML and how we can gradually add functionality to the basic HTML structure.
 
-## Jak spustit projekt
+## How to Run the Project
 
-1. Ujistěte se, že máte nainstalovaný Node.js
-2. Nainstalujte závislosti:
+1. Make sure you have Node.js installed
+2. Install dependencies:
    ```
    npm install
    ```
-3. Spusťte vývojový server:
+3. Start the development server:
    ```
    npm run dev
    ```
-4. Otevřete prohlížeč na adrese: `http://localhost:5173`
+4. Open your browser at: `http://localhost:5173`
 
-## Struktura HTML
+## HTML Structure
 
-HTML struktura aplikace je jednoduchá a srozumitelná:
+The HTML structure of the application is simple and understandable:
 
 ```html
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seznam úkolů</title>
+    <title>Todo List</title>
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Můj seznam úkolů</h1>
-        <p class="subtitle">Přidejte si své úkoly</p>
+        <h1>My Todo List</h1>
+        <p class="subtitle">Add your tasks</p>
       </header>
 
       <main>
@@ -68,10 +73,10 @@ HTML struktura aplikace je jednoduchá a srozumitelná:
             <input
               name="todo-text"
               id="new-todo-input"
-              placeholder="Co je potřeba udělat?"
+              placeholder="What needs to be done?"
               autocomplete="off"
             />
-            <button type="submit" id="add-btn">Přidat</button>
+            <button type="submit" id="add-btn">Add</button>
           </div>
         </form>
 
@@ -81,7 +86,7 @@ HTML struktura aplikace je jednoduchá a srozumitelná:
       </main>
 
       <footer>
-        <p>Kliknutím na úkol ho označíte jako dokončený</p>
+        <p>Click on a task to mark it as completed</p>
       </footer>
     </div>
     <script type="module" src="/src/main.ts"></script>
@@ -89,44 +94,44 @@ HTML struktura aplikace je jednoduchá a srozumitelná:
 </html>
 ```
 
-Hlavní elementy:
+Main elements:
 
-- `<form id="todo-form">` - formulář pro přidání nového úkolu
-- `<input name="todo-text" id="new-todo-input">` - vstupní pole pro text úkolu
-- `<button type="submit" id="add-btn">` - tlačítko pro přidání úkolu
-- `<ul id="todo-list">` - seznam úkolů, který je dynamicky generován JavaScriptem
+- `<form id="todo-form">` - form for adding a new task
+- `<input name="todo-text" id="new-todo-input">` - input field for task text
+- `<button type="submit" id="add-btn">` - button for adding a task
+- `<ul id="todo-list">` - list of tasks that is dynamically generated by JavaScript
 
-## Základní funkce JavaScriptu
+## Basic JavaScript Functions
 
-V aplikaci jsou použity následující základní funkce JavaScriptu:
+The application uses the following basic JavaScript functions:
 
-### 1. Získání elementů ze stránky
+### 1. Getting Elements from the Page
 
 ```javascript
 const todoForm = document.getElementById("todo-form") as HTMLFormElement;
 const todoList = document.getElementById("todo-list") as HTMLUListElement;
 ```
 
-Funkce `document.getElementById()` vrací element podle jeho ID. V TypeScriptu používáme `as HTMLFormElement` pro určení typu elementu.
+The `document.getElementById()` function returns an element by its ID. In TypeScript, we use `as HTMLFormElement` to specify the element type.
 
-### 2. Přidání posluchače události
+### 2. Adding an Event Listener
 
 ```javascript
 todoForm.addEventListener("submit", handleTodoFormSubmit);
 ```
 
-Metoda `addEventListener()` přidává posluchače události na element. V tomto případě posloucháme událost `submit` na formuláři.
+The `addEventListener()` method adds an event listener to an element. In this case, we're listening for the `submit` event on the form.
 
-### 3. Získání dat z formuláře
+### 3. Getting Form Data
 
 ```javascript
 const formData = new FormData(todoForm);
 const todoText = formData.get("todo-text") as string;
 ```
 
-`FormData` je objekt, který umožňuje snadno získat data z formuláře. Metoda `get()` vrací hodnotu podle jména pole.
+`FormData` is an object that allows easy access to form data. The `get()` method returns the value by field name.
 
-### 4. Vytvoření elementů
+### 4. Creating Elements
 
 ```javascript
 const todoItem = document.createElement("li");
@@ -134,19 +139,19 @@ const span = document.createElement("span");
 const button = document.createElement("button");
 ```
 
-Metoda `document.createElement()` vytváří nový HTML element.
+The `document.createElement()` method creates a new HTML element.
 
-### 5. Nastavení atributů a vlastností
+### 5. Setting Attributes and Properties
 
 ```javascript
 todoItem.setAttribute("data-id", todo.id);
 span.textContent = todo.text;
-button.textContent = "Smazat";
+button.textContent = "Delete";
 ```
 
-Metoda `setAttribute()` nastavuje atribut elementu, vlastnost `textContent` nastavuje textový obsah elementu.
+The `setAttribute()` method sets an element's attribute, the `textContent` property sets the text content of an element.
 
-### 6. Přidání elementů do DOM
+### 6. Adding Elements to the DOM
 
 ```javascript
 todoItem.appendChild(span);
@@ -154,103 +159,103 @@ todoItem.appendChild(button);
 todoList.appendChild(todoItem);
 ```
 
-Metoda `appendChild()` přidává element jako potomka jiného elementu.
+The `appendChild()` method adds an element as a child of another element.
 
-### 7. Vyčištění obsahu elementu
+### 7. Clearing Element Content
 
 ```javascript
 todoList.innerHTML = "";
 ```
 
-Vlastnost `innerHTML` umožňuje nastavit nebo získat HTML obsah elementu. Nastavením na prázdný řetězec vyčistíme obsah elementu.
+The `innerHTML` property allows setting or getting the HTML content of an element. Setting it to an empty string clears the element's content.
 
-## Klíčové koncepty JavaScriptu
+## Key JavaScript Concepts
 
-### Datové typy
+### Data Types
 
-JavaScript má několik základních datových typů:
+JavaScript has several basic data types:
 
-#### Primitivní typy
+#### Primitive Types
 
 ```javascript
-// String (řetězec)
-const text = "Ahoj světe";
+// String
+const text = "Hello world";
 
-// Number (číslo)
-const cislo = 42;
-const desetinne = 3.14;
+// Number
+const number = 42;
+const decimal = 3.14;
 
-// Boolean (logická hodnota)
-const jePravda = true;
-const jeNepravda = false;
+// Boolean
+const isTrue = true;
+const isFalse = false;
 
-// Undefined (nedefinovaná hodnota)
-let nedefinovano;
-console.log(nedefinovano); // undefined
+// Undefined
+let undefined;
+console.log(undefined); // undefined
 
-// Null (prázdná hodnota)
-const prazdno = null;
+// Null
+const empty = null;
 
-// Symbol (unikátní identifikátor)
-const symbol = Symbol("popis");
+// Symbol
+const symbol = Symbol("description");
 
-// BigInt (velká celá čísla)
-const velkeCislo = 9007199254740991n;
+// BigInt
+const bigNumber = 9007199254740991n;
 ```
 
-#### Objekty
+#### Objects
 
 ```javascript
-// Objekt
-const osoba = {
-  jmeno: "Jan",
-  vek: 30,
-  adresa: {
-    ulice: "Hlavní 123",
-    mesto: "Praha",
+// Object
+const person = {
+  name: "John",
+  age: 30,
+  address: {
+    street: "Main St 123",
+    city: "Prague",
   },
 };
 
-// Pole (speciální typ objektu)
-const barvy = ["červená", "zelená", "modrá"];
+// Array (special type of object)
+const colors = ["red", "green", "blue"];
 ```
 
-### Operátory
+### Operators
 
-JavaScript podporuje různé typy operátorů:
+JavaScript supports various types of operators:
 
-#### Aritmetické operátory
+#### Arithmetic Operators
 
 ```javascript
 const a = 10;
 const b = 5;
 
-console.log(a + b); // Sčítání: 15
-console.log(a - b); // Odčítání: 5
-console.log(a * b); // Násobení: 50
-console.log(a / b); // Dělení: 2
-console.log(a % b); // Modulo (zbytek po dělení): 0
-console.log(a ** b); // Umocnění: 100000
-console.log(a++); // Inkrementace: 10 (vrátí hodnotu a pak zvýší)
-console.log(++a); // Inkrementace: 12 (zvýší a pak vrátí hodnotu)
-console.log(b--); // Dekrementace: 5 (vrátí hodnotu a pak sníží)
-console.log(--b); // Dekrementace: 3 (sníží a pak vrátí hodnotu)
+console.log(a + b); // Addition: 15
+console.log(a - b); // Subtraction: 5
+console.log(a * b); // Multiplication: 50
+console.log(a / b); // Division: 2
+console.log(a % b); // Modulo (remainder): 0
+console.log(a ** b); // Exponentiation: 100000
+console.log(a++); // Increment: 10 (returns value then increments)
+console.log(++a); // Increment: 12 (increments then returns value)
+console.log(b--); // Decrement: 5 (returns value then decrements)
+console.log(--b); // Decrement: 3 (decrements then returns value)
 ```
 
-#### Porovnávací operátory
+#### Comparison Operators
 
 ```javascript
-console.log(5 == "5"); // Rovná se (typová konverze): true
-console.log(5 === "5"); // Rovná se (bez typové konverze): false
-console.log(5 != "5"); // Nerovná se (typová konverze): false
-console.log(5 !== "5"); // Nerovná se (bez typové konverze): true
-console.log(5 > 3); // Větší než: true
-console.log(5 >= 5); // Větší nebo rovno: true
-console.log(3 < 5); // Menší než: true
-console.log(5 <= 5); // Menší nebo rovno: true
+console.log(5 == "5"); // Equal to (with type conversion): true
+console.log(5 === "5"); // Equal to (without type conversion): false
+console.log(5 != "5"); // Not equal to (with type conversion): false
+console.log(5 !== "5"); // Not equal to (without type conversion): true
+console.log(5 > 3); // Greater than: true
+console.log(5 >= 5); // Greater than or equal to: true
+console.log(3 < 5); // Less than: true
+console.log(5 <= 5); // Less than or equal to: true
 ```
 
-#### Logické operátory
+#### Logical Operators
 
 ```javascript
 console.log(true && true); // AND: true
@@ -260,24 +265,24 @@ console.log(false || false); // OR: false
 console.log(!true); // NOT: false
 ```
 
-#### Operátor nullish coalescing (??)
+#### Nullish Coalescing Operator (??)
 
 ```javascript
-const hodnota = null;
-const vychozi = hodnota ?? "výchozí hodnota"; // "výchozí hodnota"
+const value = null;
+const default = value ?? "default value"; // "default value"
 ```
 
-#### Operátor optional chaining (?.)
+#### Optional Chaining Operator (?.)
 
 ```javascript
-const osoba = { adresa: { mesto: "Praha" } };
-console.log(osoba?.adresa?.mesto); // "Praha"
-console.log(osoba?.kontakt?.email); // undefined (bez chyby)
+const person = { address: { city: "Prague" } };
+console.log(person?.address?.city); // "Prague"
+console.log(person?.contact?.email); // undefined (without error)
 ```
 
-### Proměnné (let, var, const)
+### Variables (let, var, const)
 
-JavaScript nabízí tři způsoby deklarace proměnných:
+JavaScript offers three ways to declare variables:
 
 #### var
 
@@ -285,10 +290,10 @@ JavaScript nabízí tři způsoby deklarace proměnných:
 var x = 10;
 ```
 
-- Funkční scope (přístupná v celé funkci)
-- Hoisting (proměnná je dostupná v celém scope, i když je deklarována později)
-- Může být znovu deklarována
-- Nedoporučuje se používat v moderním JavaScriptu
+- Function scope (accessible throughout the function)
+- Hoisting (variable is available throughout the scope, even if declared later)
+- Can be redeclared
+- Not recommended in modern JavaScript
 
 #### let
 
@@ -296,10 +301,10 @@ var x = 10;
 let y = 20;
 ```
 
-- Blokový scope (přístupná pouze v bloku, kde je deklarována)
-- Žádný hoisting
-- Může být změněna, ale ne znovu deklarována
-- Doporučený způsob deklarace proměnných, které se budou měnit
+- Block scope (accessible only within the block where it's declared)
+- No hoisting
+- Can be changed but not redeclared
+- Recommended way to declare variables that will change
 
 #### const
 
@@ -307,140 +312,140 @@ let y = 20;
 const z = 30;
 ```
 
-- Blokový scope
-- Žádný hoisting
-- Nemůže být změněna ani znovu deklarována
-- Doporučený způsob deklarace konstant
+- Block scope
+- No hoisting
+- Cannot be changed or redeclared
+- Recommended way to declare constants
 
-### Objekty a třídy
+### Objects and Classes
 
-JavaScript je objektově orientovaný jazyk, který podporuje práci s objekty a třídami.
+JavaScript is an object-oriented language that supports working with objects and classes.
 
-#### Objekty
+#### Objects
 
 ```javascript
-// Vytvoření objektu pomocí literálu
-const osoba = {
-  jmeno: "Jan",
-  vek: 30,
-  pozdravit: function () {
-    return `Ahoj, jsem ${this.jmeno}`;
+// Creating an object using a literal
+const person = {
+  name: "John",
+  age: 30,
+  greet: function () {
+    return `Hello, I'm ${this.name}`;
   },
 };
 
-// Přístup k vlastnostem
-console.log(osoba.jmeno); // "Jan"
-console.log(osoba["vek"]); // 30
-console.log(osoba.pozdravit()); // "Ahoj, jsem Jan"
+// Accessing properties
+console.log(person.name); // "John"
+console.log(person["age"]); // 30
+console.log(person.greet()); // "Hello, I'm John"
 
-// Přidání nové vlastnosti
-osoba.povolani = "programátor";
+// Adding a new property
+person.occupation = "programmer";
 
-// Smazání vlastnosti
-delete osoba.vek;
+// Deleting a property
+delete person.age;
 ```
 
-#### Třídy
+#### Classes
 
 ```javascript
-// Definice třídy
-class Osoba {
-  constructor(jmeno, vek) {
-    this.jmeno = jmeno;
-    this.vek = vek;
+// Class definition
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
   }
 
-  pozdravit() {
-    return `Ahoj, jsem ${this.jmeno}`;
+  greet() {
+    return `Hello, I'm ${this.name}`;
   }
 
-  // Statická metoda
-  static vytvorAnonymni() {
-    return new Osoba("Anonym", 0);
+  // Static method
+  static createAnonymous() {
+    return new Person("Anonymous", 0);
   }
 }
 
-// Vytvoření instance
-const jan = new Osoba("Jan", 30);
-console.log(jan.pozdravit()); // "Ahoj, jsem Jan"
+// Creating an instance
+const john = new Person("John", 30);
+console.log(john.greet()); // "Hello, I'm John"
 
-// Dědičnost
-class Programator extends Osoba {
-  constructor(jmeno, vek, jazyk) {
-    super(jmeno, vek);
-    this.jazyk = jazyk;
+// Inheritance
+class Programmer extends Person {
+  constructor(name, age, language) {
+    super(name, age);
+    this.language = language;
   }
 
-  programovat() {
-    return `${this.jmeno} programuje v ${this.jazyk}`;
+  code() {
+    return `${this.name} is coding in ${this.language}`;
   }
 }
 
-const programator = new Programator("Jan", 30, "JavaScript");
-console.log(programator.programovat()); // "Jan programuje v JavaScript"
+const programmer = new Programmer("John", 30, "JavaScript");
+console.log(programmer.code()); // "John is coding in JavaScript"
 ```
 
-### Pole (Arrays)
+### Arrays
 
-Pole v JavaScriptu jsou speciální typ objektu, který umožňuje ukládat a zpracovávat kolekce hodnot.
+Arrays in JavaScript are a special type of object that allows storing and processing collections of values.
 
 ```javascript
-// Vytvoření pole
-const barvy = ["červená", "zelená", "modrá"];
+// Creating an array
+const colors = ["red", "green", "blue"];
 
-// Přístup k prvkům
-console.log(barvy[0]); // "červená"
-console.log(barvy.length); // 3
+// Accessing elements
+console.log(colors[0]); // "red"
+console.log(colors.length); // 3
 
-// Přidání prvku na konec
-barvy.push("žlutá");
-console.log(barvy); // ["červená", "zelená", "modrá", "žlutá"]
+// Adding an element to the end
+colors.push("yellow");
+console.log(colors); // ["red", "green", "blue", "yellow"]
 
-// Odstranění posledního prvku
-const posledni = barvy.pop();
-console.log(posledni); // "žlutá"
-console.log(barvy); // ["červená", "zelená", "modrá"]
+// Removing the last element
+const last = colors.pop();
+console.log(last); // "yellow"
+console.log(colors); // ["red", "green", "blue"]
 
-// Přidání prvku na začátek
-barvy.unshift("bílá");
-console.log(barvy); // ["bílá", "červená", "zelená", "modrá"]
+// Adding an element to the beginning
+colors.unshift("white");
+console.log(colors); // ["white", "red", "green", "blue"]
 
-// Odstranění prvního prvku
-const prvni = barvy.shift();
-console.log(prvni); // "bílá"
-console.log(barvy); // ["červená", "zelená", "modrá"]
+// Removing the first element
+const first = colors.shift();
+console.log(first); // "white"
+console.log(colors); // ["red", "green", "blue"]
 
-// Metody pro práci s poli
-const cisla = [1, 2, 3, 4, 5];
+// Array methods
+const numbers = [1, 2, 3, 4, 5];
 
-// map - transformace každého prvku
-const dvojnasobek = cisla.map((cislo) => cislo * 2);
-console.log(dvojnasobek); // [2, 4, 6, 8, 10]
+// map - transform each element
+const doubled = numbers.map((number) => number * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
 
-// filter - filtrování prvků podle podmínky
-const suda = cisla.filter((cislo) => cislo % 2 === 0);
-console.log(suda); // [2, 4]
+// filter - filter elements based on a condition
+const even = numbers.filter((number) => number % 2 === 0);
+console.log(even); // [2, 4]
 
-// reduce - redukce pole na jednu hodnotu
-const soucet = cisla.reduce((akumulator, cislo) => akumulator + cislo, 0);
-console.log(soucet); // 15
+// reduce - reduce array to a single value
+const sum = numbers.reduce((accumulator, number) => accumulator + number, 0);
+console.log(sum); // 15
 
-// find - nalezení prvního prvku splňujícího podmínku
-const vetsiNezTri = cisla.find((cislo) => cislo > 3);
-console.log(vetsiNezTri); // 4
+// find - find the first element that satisfies a condition
+const greaterThanThree = numbers.find((number) => number > 3);
+console.log(greaterThanThree); // 4
 
-// some - zjištění, zda alespoň jeden prvek splňuje podmínku
-const obsahujeTri = cisla.some((cislo) => cislo === 3);
-console.log(obsahujeTri); // true
+// some - check if at least one element satisfies a condition
+const containsThree = numbers.some((number) => number === 3);
+console.log(containsThree); // true
 
-// every - zjištění, zda všechny prvky splňují podmínku
-const vsechnyVetsiNezNula = cisla.every((cislo) => cislo > 0);
-console.log(vsechnyVetsiNezNula); // true
+// every - check if all elements satisfy a condition
+const allGreaterThanZero = numbers.every((number) => number > 0);
+console.log(allGreaterThanZero); // true
 ```
 
-### Funkce (normální a arrow)
+### Functions (normal and arrow)
 
-#### Normální funkce
+#### Normal Functions
 
 ```javascript
 function add(a, b) {
@@ -448,235 +453,235 @@ function add(a, b) {
 }
 ```
 
-- Vlastní `this` kontext
-- Může být použita jako konstruktor (s klíčovým slovem `new`)
-- Má přístup k `arguments` objektu
-- Může být pojmenována
+- Has its own `this` context
+- Can be used as a constructor (with the `new` keyword)
+- Has access to the `arguments` object
+- Can be named
 
-#### Arrow funkce
+#### Arrow Functions
 
 ```javascript
 const multiply = (a, b) => a * b;
 ```
 
-- Dědí `this` kontext z okolního scope
-- Nemůže být použita jako konstruktor
-- Nemá přístup k `arguments` objektu
-- Stručnější syntaxe
-- Ideální pro callback funkce
+- Inherits `this` context from the surrounding scope
+- Cannot be used as a constructor
+- Does not have access to the `arguments` object
+- Shorter syntax
+- Ideal for callback functions
 
-#### Rozdíl ve scopingu
+#### Scoping Difference
 
 ```javascript
-// Normální funkce
+// Normal function
 function example() {
-  console.log(this); // this je kontext, ve kterém je funkce volána
+  console.log(this); // this is the context in which the function is called
 
   setTimeout(function () {
-    console.log(this); // this je window nebo undefined (v závislosti na strict mode)
+    console.log(this); // this is window or undefined (depending on strict mode)
   }, 1000);
 }
 
-// Arrow funkce
+// Arrow function
 function example() {
-  console.log(this); // this je kontext, ve kterém je funkce volána
+  console.log(this); // this is the context in which the function is called
 
   setTimeout(() => {
-    console.log(this); // this je stejný jako v nadřazeném scope
+    console.log(this); // this is the same as in the parent scope
   }, 1000);
 }
 ```
 
-Hlavní rozdíl je v tom, jak pracují s `this` kontextem. Arrow funkce nemají vlastní `this`, ale dědí ho z nadřazeného scope. To je užitečné zejména v callback funkcích, kde chceme zachovat původní `this` kontext.
+The main difference is in how they work with the `this` context. Arrow functions don't have their own `this`, but inherit it from the parent scope. This is especially useful in callback functions where we want to preserve the original `this` context.
 
-### Podmínky
+### Conditions
 
-Podmínky v JavaScriptu umožňují provádět různé akce podle toho, zda je splněna určitá podmínka.
+Conditions in JavaScript allow performing different actions based on whether a certain condition is met.
 
 #### if, else if, else
 
 ```javascript
-if (podmínka) {
-  // Kód, který se provede, pokud je podmínka splněna
-} else if (jiná podmínka) {
-  // Kód, který se provede, pokud je jiná podmínka splněna
+if (condition) {
+  // Code that executes if the condition is true
+} else if (anotherCondition) {
+  // Code that executes if anotherCondition is true
 } else {
-  // Kód, který se provede, pokud není splněna žádná podmínka
+  // Code that executes if no condition is true
 }
 ```
 
-#### Ternární operátor
+#### Ternary Operator
 
 ```javascript
-const výsledek = podmínka ? hodnota1 : hodnota2;
+const result = condition ? value1 : value2;
 ```
 
-Ternární operátor je zkrácený zápis podmínky. Pokud je podmínka splněna, vrátí se hodnota1, jinak hodnota2.
+The ternary operator is a shorthand for a condition. If the condition is true, it returns value1, otherwise value2.
 
 #### switch
 
 ```javascript
-switch (hodnota) {
+switch (value) {
   case 1:
-    // Kód pro hodnotu 1
+    // Code for value 1
     break;
   case 2:
-    // Kód pro hodnotu 2
+    // Code for value 2
     break;
   default:
-  // Kód pro všechny ostatní hodnoty
+  // Code for all other values
 }
 ```
 
-Switch je užitečný, když chceme provést různé akce podle hodnoty proměnné.
+Switch is useful when we want to perform different actions based on a variable's value.
 
-### Cykly
+### Loops
 
-Cykly v JavaScriptu umožňují opakovaně provádět určitý blok kódu.
+Loops in JavaScript allow repeatedly executing a certain block of code.
 
 #### for
 
 ```javascript
 for (let i = 0; i < 10; i++) {
-  // Kód, který se provede 10krát
+  // Code that executes 10 times
 }
 ```
 
-For cyklus se používá, když víme, kolikrát chceme cyklus opakovat.
+For loop is used when we know how many times we want to repeat the loop.
 
 #### while
 
 ```javascript
 let i = 0;
 while (i < 10) {
-  // Kód, který se provede, dokud je i < 10
+  // Code that executes as long as i < 10
   i++;
 }
 ```
 
-While cyklus se provádí, dokud je splněna podmínka.
+While loop executes as long as the condition is true.
 
 #### do...while
 
 ```javascript
 let i = 0;
 do {
-  // Kód, který se provede alespoň jednou
+  // Code that executes at least once
   i++;
 } while (i < 10);
 ```
 
-Do...while cyklus se provede alespoň jednou, i když podmínka není splněna.
+Do...while loop executes at least once, even if the condition is not met.
 
 #### for...of
 
 ```javascript
-const pole = [1, 2, 3, 4, 5];
-for (const hodnota of pole) {
-  // Kód, který se provede pro každou hodnotu v poli
+const array = [1, 2, 3, 4, 5];
+for (const value of array) {
+  // Code that executes for each value in the array
 }
 ```
 
-For...of cyklus se používá pro iteraci přes iterovatelné objekty (pole, řetězce, atd.).
+For...of loop is used for iterating over iterable objects (arrays, strings, etc.).
 
 #### for...in
 
 ```javascript
-const objekt = { a: 1, b: 2, c: 3 };
-for (const klíč in objekt) {
-  // Kód, který se provede pro každý klíč v objektu
+const object = { a: 1, b: 2, c: 3 };
+for (const key in object) {
+  // Code that executes for each key in the object
 }
 ```
 
-For...in cyklus se používá pro iteraci přes vlastnosti objektu.
+For...in loop is used for iterating over object properties.
 
-### Události (Events)
+### Events
 
-JavaScript umožňuje reagovat na různé události, které se dějí v prohlížeči.
+JavaScript allows responding to various events that occur in the browser.
 
-#### Základní události
+#### Basic Events
 
 ```javascript
-// Události myši
+// Mouse events
 element.addEventListener("click", function (event) {
-  console.log("Kliknutí na element");
+  console.log("Click on element");
 });
 
 element.addEventListener("mouseover", function (event) {
-  console.log("Myš je nad elementem");
+  console.log("Mouse is over element");
 });
 
 element.addEventListener("mouseout", function (event) {
-  console.log("Myš opustila element");
+  console.log("Mouse left element");
 });
 
-// Události klávesnice
+// Keyboard events
 document.addEventListener("keydown", function (event) {
-  console.log(`Stisknuta klávesa: ${event.key}`);
+  console.log(`Key pressed: ${event.key}`);
 });
 
-// Události formuláře
+// Form events
 form.addEventListener("submit", function (event) {
-  event.preventDefault(); // Zabránění výchozímu chování (odeslání formuláře)
-  console.log("Formulář byl odeslán");
+  event.preventDefault(); // Prevent default behavior (form submission)
+  console.log("Form was submitted");
 });
 
 input.addEventListener("change", function (event) {
-  console.log(`Hodnota změněna na: ${event.target.value}`);
+  console.log(`Value changed to: ${event.target.value}`);
 });
 
-// Události okna
+// Window events
 window.addEventListener("load", function () {
-  console.log("Stránka byla načtena");
+  console.log("Page was loaded");
 });
 
 window.addEventListener("resize", function () {
-  console.log(`Velikost okna: ${window.innerWidth}x${window.innerHeight}`);
+  console.log(`Window size: ${window.innerWidth}x${window.innerHeight}`);
 });
 ```
 
-#### Event objekt
+#### Event Object
 
-Když se událost spustí, JavaScript vytvoří objekt události, který obsahuje informace o události.
+When an event occurs, JavaScript creates an event object that contains information about the event.
 
 ```javascript
 element.addEventListener("click", function (event) {
   console.log(event.type); // "click"
-  console.log(event.target); // Element, na který bylo kliknuto
-  console.log(event.clientX); // X souřadnice kliknutí
-  console.log(event.clientY); // Y souřadnice kliknutí
-  console.log(event.preventDefault); // Funkce pro zabránění výchozímu chování
-  console.log(event.stopPropagation); // Funkce pro zastavení šíření události
+  console.log(event.target); // Element that was clicked
+  console.log(event.clientX); // X coordinate of click
+  console.log(event.clientY); // Y coordinate of click
+  console.log(event.preventDefault); // Function to prevent default behavior
+  console.log(event.stopPropagation); // Function to stop event propagation
 });
 ```
 
-#### Delegování událostí
+#### Event Delegation
 
-Delegování událostí je technika, při které se událost zachytí na nadřazeném elementu a zpracuje se podle cílového elementu.
+Event delegation is a technique where an event is captured on a parent element and processed based on the target element.
 
 ```javascript
-// Místo přidávání události na každý element
+// Instead of adding an event to each element
 const buttons = document.querySelectorAll("button");
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
-    console.log("Kliknutí na tlačítko");
+    console.log("Button clicked");
   });
 });
 
-// Použijeme delegování událostí
+// Use event delegation
 const container = document.querySelector(".container");
 container.addEventListener("click", function (event) {
   if (event.target.tagName === "BUTTON") {
-    console.log("Kliknutí na tlačítko");
+    console.log("Button clicked");
   }
 });
 ```
 
-### Asynchronní programování
+### Asynchronous Programming
 
-JavaScript je jednovláknový jazyk, což znamená, že může provádět pouze jeden blok kódu najednou. Asynchronní programování umožňuje provádět dlouhotrvající operace bez blokování hlavního vlákna.
+JavaScript is a single-threaded language, which means it can only execute one block of code at a time. Asynchronous programming allows performing long-running operations without blocking the main thread.
 
-#### Callback funkce
+#### Callback Functions
 
 ```javascript
 function fetchData(callback) {
@@ -691,21 +696,21 @@ fetchData((data) => {
 });
 ```
 
-Callback funkce jsou předávány jako argumenty jiným funkcím a jsou volány po dokončení operace. Mohou vést k "callback hell" (vnořené callbacky), což ztěžuje čtení a údržbu kódu.
+Callback functions are passed as arguments to other functions and are called after the operation is completed. They can lead to "callback hell" (nested callbacks), which makes code harder to read and maintain.
 
 #### Promises
 
-Promise je objekt, který představuje dokončení (nebo selhání) asynchronní operace a její výslednou hodnotu.
+A Promise is an object that represents the completion (or failure) of an asynchronous operation and its resulting value.
 
 ```javascript
 const promise = new Promise((resolve, reject) => {
-  // Asynchronní operace
+  // Asynchronous operation
   const success = true;
 
   if (success) {
     resolve({ name: "John", age: 30 });
   } else {
-    reject(new Error("Operace selhala"));
+    reject(new Error("Operation failed"));
   }
 });
 
@@ -718,15 +723,15 @@ promise
   });
 ```
 
-Promise má tři stavy:
+A Promise has three states:
 
-- **Pending (čekající)**: Počáteční stav, operace ještě není dokončena
-- **Fulfilled (splněná)**: Operace byla úspěšně dokončena
-- **Rejected (zamítnutá)**: Operace selhala
+- **Pending**: Initial state, operation is not yet completed
+- **Fulfilled**: Operation was successfully completed
+- **Rejected**: Operation failed
 
 #### async/await
 
-`async/await` je syntaktický cukr nad Promises, který umožňuje psát asynchronní kód v synchronním stylu.
+`async/await` is syntactic sugar over Promises that allows writing asynchronous code in a synchronous style.
 
 ```javascript
 async function fetchData() {
@@ -735,12 +740,12 @@ async function fetchData() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Chyba při načítání dat:", error);
+    console.error("Error fetching data:", error);
     throw error;
   }
 }
 
-// Použití
+// Usage
 fetchData()
   .then((data) => {
     console.log(data);
@@ -750,18 +755,18 @@ fetchData()
   });
 ```
 
-Klíčová slova:
+Key terms:
 
-- `async` před funkcí označuje, že funkce vrací Promise
-- `await` může být použito pouze uvnitř `async` funkce a čeká na dokončení Promise
-- `try/catch` blok umožňuje zachytit chyby v asynchronním kódu
+- `async` before a function indicates that the function returns a Promise
+- `await` can only be used inside an `async` function and waits for a Promise to complete
+- `try/catch` block allows catching errors in asynchronous code
 
-#### Paralelní zpracování
+#### Parallel Processing
 
 ```javascript
 async function fetchMultipleData() {
   try {
-    // Paralelní zpracování více Promise
+    // Parallel processing of multiple Promises
     const [data1, data2] = await Promise.all([
       fetch("https://api.example.com/data1").then((res) => res.json()),
       fetch("https://api.example.com/data2").then((res) => res.json()),
@@ -769,18 +774,18 @@ async function fetchMultipleData() {
 
     return { data1, data2 };
   } catch (error) {
-    console.error("Chyba při načítání dat:", error);
+    console.error("Error fetching data:", error);
     throw error;
   }
 }
 ```
 
-`Promise.all()` umožňuje spustit více Promise paralelně a počkat na dokončení všech z nich.
+`Promise.all()` allows running multiple Promises in parallel and waiting for all of them to complete.
 
-## Užitečné odkazy
+## Useful Links
 
-- [MDN Web Docs - JavaScript](https://developer.mozilla.org/cs/docs/Web/JavaScript) - Oficiální dokumentace JavaScriptu
-- [MDN Web Docs - DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) - Dokumentace DOM API
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/) - Oficiální dokumentace TypeScriptu
-- [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/) - Interaktivní tutoriál JavaScriptu
-- [JavaScript.info](https://javascript.info/) - Moderní JavaScript tutoriál
+- [MDN Web Docs - JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - Official JavaScript documentation
+- [MDN Web Docs - DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) - DOM API documentation
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/) - Official TypeScript documentation
+- [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/) - Interactive JavaScript tutorial
+- [JavaScript.info](https://javascript.info/) - Modern JavaScript tutorial
