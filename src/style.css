@@ -1,7 +1,10 @@
+/* Variables */
 :root {
   /* Dark theme colors */
   --bg: #1a1b1e;
+  --bg-hover: #151517;
   --surface: #2c2d31;
+  --surface-hover: #3c3d41;
   --primary: #7289da;
   --primary-hover: #5b6eae;
   --text: #ffffff;
@@ -10,8 +13,12 @@
   --success: #43b581;
   --radius: 12px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --transition: all 0.2s ease-in-out;
+  --animation: cubic-bezier(0.4, 0, 0.2, 1);
+  --hover-scale: scale(1.02);
 }
 
+/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -27,12 +34,14 @@ body {
   line-height: 1.6;
 }
 
+/* Layout */
 .container {
   max-width: 600px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
+/* Header */
 header {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -49,6 +58,7 @@ h1 {
   font-size: 1.1rem;
 }
 
+/* Input & Button Styles */
 .input-group {
   display: flex;
   gap: 0.5rem;
@@ -86,8 +96,10 @@ button {
 
 button:hover {
   background-color: var(--primary-hover);
+  box-shadow: var(--shadow);
 }
 
+/* Todo List Container */
 .todo-container {
   background: var(--surface);
   border-radius: var(--radius);
@@ -95,8 +107,21 @@ button:hover {
   box-shadow: var(--shadow);
 }
 
+/* List Styles */
 ul {
   list-style: none;
+}
+
+@keyframes clickFlash {
+  0% {
+    background-color: var(--bg);
+  }
+  50% {
+    background-color: var(--primary);
+  }
+  100% {
+    background-color: var(--bg);
+  }
 }
 
 li {
@@ -108,6 +133,15 @@ li {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  transition: var(--transition);
+}
+
+li:active {
+  animation: clickFlash 0.3s ease-in-out;
+}
+
+li:hover {
+  background-color: var(--bg-hover);
 }
 
 li span {
@@ -130,6 +164,7 @@ li button:hover {
   background-color: #c03537;
 }
 
+/* Footer */
 footer {
   text-align: center;
   margin-top: 2rem;
@@ -137,6 +172,7 @@ footer {
   font-size: 0.9rem;
 }
 
+/* Responsive Design */
 @media (max-width: 500px) {
   .container {
     padding: 1rem;
