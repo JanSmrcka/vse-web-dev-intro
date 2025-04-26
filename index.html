@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
   <head>
     <meta charset="UTF-8" />
@@ -8,6 +8,33 @@
   </head>
 
   <body>
+    <div class="container">
+      <header>
+        <h1>My Todo List</h1>
+        <p class="subtitle">Add your tasks</p>
+      </header>
+
+      <main>
+        <form id="todo-form">
+          <div class="input-group">
+            <input
+              name="todo-text"
+              id="new-todo-input"
+              placeholder="What needs to be done?"
+              autocomplete="off"
+            />
+            <button type="submit" id="add-btn">Add</button>
+          </div>
+        </form>
+        <div class="todo-container">
+          <ul id="todo-list"></ul>
+        </div>
+      </main>
+
+      <footer>
+        <p>Click on a task to mark it as completed</p>
+      </footer>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
