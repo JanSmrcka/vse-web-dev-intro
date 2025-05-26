@@ -1,41 +1,98 @@
+import { todoService } from '../api/todos'
 import { Todo } from '../types'
 
 class TodoList {
     todos: Todo[] = []
     todoListElement
 
+    isLoading: boolean = false
+
     constructor(elementId: string) {
         this.todoListElement = document.getElementById(elementId) as HTMLUListElement
-
+        this.loadTodos()
     }
 
-    addTodo(todoValue: string) {
-        const newTodo: Todo = {
-        id: crypto.randomUUID(),
-        text: todoValue,
-        completed: false,
-    }
-    this.todos.push(newTodo)
-    this.render
-    }
-
-    removeTodo(id: string){
-        this.todos = this.todos.filter((todo) => todo.id !== id)
-    }
-
-    toggle(id: string) {
-        this.todos = this.todos.map((todo)=>{
-            if (todo.id === id) {
-                return {...todo, completed: !todo.completed }
-            }
-            return todo
-        })
-        console.log(this.todos)
-        this.render
+    private async loadTodos() {
+        try {
+            this.isLoading = true
+            this.render()
+            const newTodos = await todoService.fetchTodos()
+            this.todos = newTodos
+        } catch (error) {
+            console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
+        }
     }
 
-    render () {
+    async addTodo(todoValue: string) {
+        try {
+            this.isLoading = true
+            this.render()
+            const newTodo = await todoService.createTodo(todoValue)
+            this.todos.push(newTodo)
+            this.render()
+        } catch (error) {
+            console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
+        }
+    }
+
+    async removeTodo(id: string){
+        try {
+            this.isLoading = true
+            this.render()
+            await todoService.deleteTodo(id)
+            this.todos = this.todos.filter((todo) => todo.id !== id)
+            this.render()
+        } catch (error) {
+            console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
+        }
+    }
+
+    async toggle(id: string) {
+        const todo = this.todos.find((todo) => id === todo.id)
+        try {
+            this.isLoading = true
+            this.render()
+            const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
+            this.todos = this.todos.map((todo)=>{
+                if (todo.id === id) {
+                    return newTodo
+                }
+                return todo
+            })
+        } catch (error) {
+            console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
+        }
+    }
+
+    private render () {
         this.todoListElement.innerHTML = ''
+
+        if(this.isLoading && this.todos.length === 0){
+            this.todoListElement.appendChild(createLoadingSpinner())
+            return 
+        }
+
+        if (this.isLoading) {
+            this.todoListElement.classList.add('isLoading')
+        }
+
+        if (this.isLoading) {
+            this.todoListElement.classList.remove('isLoading')
+        }
+
         this.todos.forEach((item) => {
             const todoItemElement = document.createElement('li')
             const todoSpanElement = document.createElement('span')
@@ -52,7 +109,8 @@ class TodoList {
             const deleteButton = document.createElement('button')
             deleteButton.innerHTML = 'delete'
 
-            deleteButton.addEventListener("click", ()=>{
+            deleteButton.addEventListener("click", (e)=>{
+                e.stopPropagation()
                 this.removeTodo(item.id)
             })
 
@@ -62,6 +120,15 @@ class TodoList {
             this.todoListElement?.appendChild(todoItemElement)
         })
     }
+}
+
+function createLoadingSpinner() {
+    const container = document.createElement('div')
+    const spinner = document.createElement('div')
+    container.className = 'loading-container'
+    spinner.className = 'loading-spinner'
+    container.appendChild(spinner)
+    return container
 }
 
 export const todoList = new TodoList('todo-list')
