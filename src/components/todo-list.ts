@@ -23,21 +23,24 @@ async addTodo(todoValue: string) {
   this.render()
 }
 
-removeTodo(id: string){
+  async removeTodo(id: number) {
+    await todoService.deleteTodo(id)
     this.todos = this.todos.filter((todo) => todo.id !== id)
         this.render()
 }
 
-toggle(id: string){
+  async toggle(id: number) {
+    const todo = this.todos.find((todo) => id === todo.id)
+    const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
     this.todos = this.todos.map((todo) => {
-          if (todo.id === id) {
-            return { ...todo, completed: !todo.completed }
-          }
-          return todo
-        })
-        console.log(this.todos)
-        this.render()
-}
+      if (todo.id === id) {
+        return newTodo
+      }
+      return todo
+    })
+    this.render()
+  }
 
   render() {
     this.todoListElement.innerHTML = ''
@@ -58,8 +61,8 @@ toggle(id: string){
       const deleteButton = document.createElement('button')
       deleteButton.innerHTML = 'Delete'
 
-      deleteButton.addEventListener('click', () => {
-        
+      deleteButton.addEventListener('click', (e) => {
+        e.stopPropagation()
         this.removeTodo(item.id)
 
       })
