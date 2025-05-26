@@ -1,11 +1,19 @@
-import {Todo} from "../types"
+import { todoService } from "../api/todos"
+import { Todo } from "../types"
 
 class TodoList {
     todos: Todo[] = []
     todoListElement
 
     constructor(elementId: string){
-        this.todoListElement = document.getElementById('todo-list') as HTMLUListElement
+        this.todoListElement = document.getElementById(elementId) as HTMLUListElement
+        this.loadTodos()
+    }
+
+    async loadTodos() {
+        const newTodos = await todoService.fetchTodos()
+        this.todos = newTodos
+        console.log(newTodos)
     }
     
     addTodo(todoValue: string) {
