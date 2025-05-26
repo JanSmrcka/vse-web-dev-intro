@@ -23,11 +23,7 @@ class Main {
    */
   private async initialize(){
     this.registerHandlers();
-    this.todoListRenderer.renderTodoList(
-      await this.todoRepository.getAllTodosCached(),
-      (id) => { alert(`Updated ID ${id}`); },
-      (id) => { alert(`Updated ID ${id}`); },
-    );
+    await this.render();
   }
 
   /**
@@ -63,14 +59,18 @@ class Main {
       };
       
       await this.todoRepository.upsertTodo(todo);
-      this.todoListRenderer.renderTodoList(
-        await this.todoRepository.getAllTodosCached(),
-        (id) => { alert(`Updated ID ${id}`); },
-        (id) => { alert(`Updated ID ${id}`); },
-      );
+      await this.render();
 
       this.todoListRenderer.setLoadingState(false);
     });
+  }
+  
+  private async render() {
+    this.todoListRenderer.renderTodoList(
+      await this.todoRepository.getAllTodosCached(),
+      (id) => { alert(`Updated ID ${id}`); },
+      (id) => { alert(`Updated ID ${id}`); },
+    );
   }
 }
 
