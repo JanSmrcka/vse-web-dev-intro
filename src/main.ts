@@ -1,6 +1,10 @@
 const formElement = document.getElementById("todo-form") as HTMLFormElement;
 import { todoList } from "./components/todo-list";
 
+document.addEventListener("DOMContentLoaded", () => {
+    todoList.render();
+});
+
 function handleFormSubmit(e: Event) {
     e.preventDefault();
     const formData = new FormData(formElement);

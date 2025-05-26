@@ -2,8 +2,14 @@ import { Todo } from '../types';
 
 class TodoList {
     todos: Todo[] = [];
-    todoListElement = document.getElementById("todo-list") as HTMLUListElement;
+    todoListElement: HTMLUListElement;
 
+    //constructor to initialize the todo list element - works with different HTML form elements
+    constructor(elementId: string) {
+        this.todoListElement = document.getElementById(elementId) as HTMLUListElement;
+    };
+
+    // Method to add a new todo item
     addTodo(todoValue: string) {
         const newTodo: Todo = {
             id: crypto.randomUUID(),
@@ -14,6 +20,27 @@ class TodoList {
         this.render();
     };
 
+    // Method to remove a todo item by its ID
+    removeTodo(todoId: string) {
+        this.todos = this.todos.filter((todo) => todo.id !== todoId);
+        this.render();
+    };
+
+    // Method to toggle the completion status of a todo item
+    toggle(todoId: string) {
+        this.todos = this.todos.map((todo) => {
+            if (todo.id === todoId) {
+                return {
+                    ...todo,
+                    completed: !todo.completed
+                }
+            };
+            return todo;
+        });
+        this.render();
+    }
+
+    // Method to render the todo list
     render() {
         this.todoListElement.innerHTML = "";
         this.todos.forEach((item) => {
@@ -28,16 +55,7 @@ class TodoList {
 
             //item element event listener
             todoItemElement.addEventListener("click", () => {
-                this.todos = this.todos.map((todo) => {
-                    if (todo.id === item.id) {
-                        return {
-                            ...todo,
-                            completed: !todo.completed
-                        }
-                    };
-                    return todo;
-                });
-                this.render();
+                this.toggle(item.id);
             });
 
             todoSpanElement.innerHTML = item.text;
@@ -45,8 +63,7 @@ class TodoList {
 
             //delete button event listener
             deleteButton.addEventListener("click", () => {
-                this.todos = this.todos.filter((todo) => todo.id !== item.id);
-                this.render();
+                this.removeTodo(item.id);
             });
 
             todoItemElement.appendChild(todoSpanElement);
@@ -56,4 +73,4 @@ class TodoList {
     };
 }
 
-export const todoList = new TodoList();
+export const todoList = new TodoList("todo-list");
