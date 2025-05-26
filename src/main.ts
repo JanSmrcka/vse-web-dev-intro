@@ -1,36 +1,66 @@
-const formElement = document.getElementById("todo-form") as HTMLFormElement;
+const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
-const todos: string[] = [];
-
-function handleFormSubmit(event: Event) {
-    event.preventDefault(); // Prevent the default form submission behavior
-    const formData = new FormData(formElement);
-    const todoValue = formData.get("todo-text") as string;
-    todos.push(todoValue);
-    renderTodos();
-    console.log(todos)
+type Todo = {
+  id: string
+  text: string
+  completed: boolean
 }
 
-formElement.addEventListener("submit", handleFormSubmit);
+let todos: Todo[] = []
+
+function handleFormSubmit(e: Event) {
+  e.preventDefault()
+  const formData = new FormData(formElement)
+  const todoValue = formData.get('todo-text') as string
+
+  const newTodo: Todo = {
+    id: crypto.randomUUID(),
+    text: todoValue,
+    completed: false,
+  }
+
+  todos.push(newTodo)
+  renderTodos()
+  formElement.reset()
+}
+
+formElement.addEventListener('submit', handleFormSubmit)
 
 function renderTodos() {
-    const todoListElement = document.getElementById("todo-list");
-    if (!todoListElement) return;
-    todoListElement.innerHTML = ""; // Clear the existing list
-    
-    todos.forEach((value) => {
-        const todoItemElement = document.createElement("li");
-        const todooSpanElement = document.createElement("span");
-        todooSpanElement.textContent = value;
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
+  const todoListElement = document.getElementById('todo-list') as HTMLUListElement
+  todoListElement.innerHTML = ''
 
+  todos.forEach((item) => {
+    const todoItemElement = document.createElement('li')
+    const todoSpanElement = document.createElement('span')
+    todoSpanElement.innerHTML = item.text
 
-        todoItemElement.appendChild(todooSpanElement);
-        todoItemElement.appendChild(deleteButton);
+    if (item.completed) {
+      todoItemElement.classList.add('completed')
+    }
 
-
-        todoListElement.appendChild(todoItemElement);
+    todoItemElement.addEventListener('click', () => {
+      todos = todos.map((todo) => {
+        if (todo.id === item.id) {
+          return { ...todo, completed: !todo.completed }
+        }
+        return todo
+      })
+      console.log(todos)
+      renderTodos()
     })
-}
 
+    const deleteButton = document.createElement('button')
+    deleteButton.innerHTML = 'delete'
+
+    deleteButton.addEventListener('click', () => {
+      todos = todos.filter((todo) => todo.id !== item.id)
+      renderTodos()
+    })
+
+    todoItemElement.appendChild(todoSpanElement)
+    todoItemElement.appendChild(deleteButton)
+
+    todoListElement?.appendChild(todoItemElement)
+  })
+}
