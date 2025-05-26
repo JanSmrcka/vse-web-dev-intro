@@ -2,6 +2,7 @@ import { Todo } from '../types';
 
 const API_URL = "https://eli-workshop.vercel.app/api/users/stip05/todos";
 
+// class for handling API errors, inherits from Error
 class ApiError extends Error {
     constructor(message: string) {
         super(message);
@@ -43,12 +44,14 @@ export const todoService = {
         });
         return handleResponse<Todo>(response);
     },
+    // Deleting a todo item by its ID
     async deleteTodo(todoId: string) {
         const response = await fetch(API_URL + "/" + todoId, {
             method: "DELETE",
         })
         return handleResponse<void>(response);
     },
+    // Toggling the completion status of a todo item
     async toggleTodo(todoId: string) {
         const todoGet = await this.getTodo(todoId);
         let completedStatus: boolean = false;

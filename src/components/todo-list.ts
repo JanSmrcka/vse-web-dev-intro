@@ -13,32 +13,45 @@ class TodoList {
 
     // Method to fetch todos from the API
     async loadTodos() {
-        const newTodos = await todoService.fetchTodos();
-        this.todos = newTodos;
-        this.render();
-        //console.log("Todos loaded:", this.todos);
+        try {
+            const newTodos = await todoService.fetchTodos();
+            this.todos = newTodos;
+            this.render();
+            //console.log("Todos loaded:", this.todos);
+        } catch (error) {
+            console.error("Error loading todos:", error);
+        }
     };
 
     // Method to add a new todo item
     async addTodo(todoValue: string) {
-        await todoService.createTodo(todoValue);
-        this.loadTodos();
-        this.render();
+        try {
+            await todoService.createTodo(todoValue);
+            this.loadTodos();
+        } catch (error) {
+            console.error("Error adding todo:", error);
+        }
     };
 
     // Method to remove a todo item by its ID
     async removeTodo(todoId: string) {
-        await todoService.deleteTodo(todoId);
-        this.loadTodos();
-        this.render();
+        try {
+            await todoService.deleteTodo(todoId);
+            this.loadTodos();
+        } catch (error) {
+            console.error("Error removing todo:", error);
+        }
     };
 
     // Method to toggle the completion status of a todo item
     async toggle(todoId: string) {
-        await todoService.toggleTodo(todoId);
-        this.loadTodos();
-        this.render();
-    }
+        try {
+            await todoService.toggleTodo(todoId);
+            this.loadTodos();
+        } catch (error) {
+            console.error("Error toggling todo:", error);
+        }
+    };
 
     // Method to render the todo list
     render() {
