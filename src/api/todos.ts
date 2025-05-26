@@ -55,7 +55,7 @@ export const todoService = {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(completed),
+            body: JSON.stringify({completed}),
 
         })  
         return handleResponse<Todo>(response)
