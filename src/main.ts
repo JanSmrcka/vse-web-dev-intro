@@ -1,17 +1,15 @@
-import { todoList } from "./components/todo-list";
+import { todoList } from './components/todo-list'
 
-const formElement = document.getElementById('todo-form')! as HTMLFormElement;
+const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
+function handleFormSubmit(e: Event) {
+  e.preventDefault()
+  const formData = new FormData(formElement)
+  const todoValue = formData.get('todo-text') as string
 
-function handleFormSubmit(e: Event){
-    e.preventDefault()
-    const formData = new FormData(formElement)
-    const todoValue = formData.get("todo-text") as string
+  todoList.addTodo(todoValue)
 
-    todoList.addTodo(todoValue)
-
-    formElement.reset()
+  formElement.reset()
 }
 
-formElement.addEventListener('submit',handleFormSubmit)
-
+formElement.addEventListener('submit', handleFormSubmit)
