@@ -29,29 +29,42 @@ class TodoList {
 
   async addTodo(todoValue: string) {
     try {
+      this.isLoading = true
+      this.render()
       const newTodo = await todoService.createTodo(todoValue)
       this.todos.push(newTodo)
       this.render()
     } catch (error) {
       console.log(error)
+    } finally {
+      this.isLoading = false
+      this.render()
     }
   }
 
   async removeTodo(id: number) {
     try {
+      this.isLoading = true
+      this.render()
       await todoService.deleteTodo(id)
       this.todos = this.todos.filter((todo) => todo.id !== id)
       this.render()
     } catch (error) {
       console.log(error)
+    } finally {
+      this.isLoading = false
+      this.render()
     }
   }
 
   async toggle(id: number) {
-    const todo = this.todos.find((todo) => id === todo.id)
-    const newTodo = await todoService.toggleTodo(id, !todo?.completed)
-
     try {
+      this.isLoading = true
+      this.render()
+
+      const todo = this.todos.find((todo) => id === todo.id)
+      const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
       this.todos = this.todos.map((todo) => {
         if (todo.id === id) {
           return newTodo
@@ -61,17 +74,25 @@ class TodoList {
       this.render()
     } catch (error) {
       console.log(error)
+    } finally {
+      this.isLoading = false
+      this.render()
     }
   }
 
   render() {
     this.todoListElement.innerHTML = ''
 
-    if (this.isLoading) {
+    if (this.isLoading === true && this.todos.length === 0) {
       this.todoListElement.appendChild(createLoadingSpinner())
-      {
-        return
-      }
+      return
+    }
+
+    if (this.isLoading) {
+      this.todoListElement.classList.add('isLoading')
+    }
+    if (!this.isLoading) {
+      this.todoListElement.classList.remove('isLoading')
     }
 
     this.todos.forEach((item) => {
