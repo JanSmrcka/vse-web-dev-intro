@@ -1,4 +1,4 @@
-export interface ITodo {
+export type Todo = {
   id: string | null;
   title: string;
   completed: boolean;

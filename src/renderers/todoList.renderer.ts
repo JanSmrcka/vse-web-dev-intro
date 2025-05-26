@@ -1,5 +1,5 @@
 import { TodoRepository } from '../repositories/todo.repository.ts'
-import { ITodo } from '../types/todo.type.ts'
+import { Todo } from '../types/todo.type.ts'
 
 export class TodoListRenderer {
   // @ts-ignore
@@ -28,7 +28,7 @@ export class TodoListRenderer {
     
   }
   
-  private decorateTodoItem(todo: ITodo): HTMLElement {
+  private decorateTodoItem(todo: Todo): HTMLElement {
     const completedClass = todo.completed ? 'completed' : '';
     const element = document.createElement('li');
     element.innerHTML =  `<li class="${completedClass} todo-item" data-id="${todo.id}">

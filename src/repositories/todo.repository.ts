@@ -1,4 +1,4 @@
-import { ITodo } from '../types/todo.type.ts'
+import { Todo } from '../types/todo.type.ts'
 import { StateManager } from '../state/state.ts'
 
 /**
@@ -7,17 +7,17 @@ import { StateManager } from '../state/state.ts'
  */
 export class TodoRepository {
   private readonly todoStateKey: string = 'TODOS';
-  private readonly state: StateManager<ITodo>;
+  private readonly state: StateManager<Todo>;
   
   constructor() {
-    this.state = new StateManager<ITodo>(this.todoStateKey);
+    this.state = new StateManager<Todo>(this.todoStateKey);
   }
   
   /**
    * Adds a new todo item to the state.
    * @param todo The todo item to add.
    */
-  upsertTodo(todo: ITodo): void {
+  upsertTodo(todo: Todo): void {
     if (!todo.id) {
       // If the todo does not have an ID, we generate one.
       todo.id = crypto.randomUUID();
@@ -46,7 +46,7 @@ export class TodoRepository {
    * @param id The ID of the todo item to retrieve.
    * @returns The todo item if found, otherwise undefined.
    */
-  getTodoById(id: string): ITodo | undefined {
+  getTodoById(id: string): Todo | undefined {
     return this.state.getItem(id);
   }
 
@@ -54,8 +54,8 @@ export class TodoRepository {
    * Get all todos.
    * @returns An array of all todo items.
    */
-  getAllTodos(): ITodo[] {
-    const todos: ITodo[] = [];
+  getAllTodos(): Todo[] {
+    const todos: Todo[] = [];
 
     for (const todo of this.state) {
       todos.push(todo);
