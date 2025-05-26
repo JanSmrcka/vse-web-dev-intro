@@ -24,32 +24,26 @@ async loadTodos() {
     this.render()
     }
 
-    removeTodo (todoId: string) {
-        this.todos = this.todos.filter((todo) => todo.id !== todoId)
+    async removeTodo (id: number) {
+        const deleteTodo = await todoService.deleteTodo(id)
+        this.todos = this.todos.filter((todo) => todo.id !== id)
         this.render()
     }
 
-    toggle(id: string) {
-                    this.todos = this.todos.map((todo)=> {
+    async toggle(id: number) {
+        const todo = this.todos.find((todo) => id === todo.id)
+        const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
+        this.todos = this.todos.map((todo)=> {
                 if (todo.id === id) {
-                    return { ...todo, completed: !todo.completed} //"..." znamená id: todo.id, text: todo.text, ...
+                    return newTodo
                 }
                 return todo
             })
             console.log(this.todos)
             this.render();
     }
-    toggleTodo(id: string) {
-        this.todos = this.todos.map((todo) => {
-            if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
-            }
-            return todo;
-        });
-        this.render();
-    };
-
-
+    
     render() {
     this.todoListElement.innerHTML = ''
 
@@ -63,7 +57,7 @@ if (item.completed) {
             }
     
             todoSpanElement.addEventListener('click', () => {
-                this.toggleTodo(item.id);
+                this.toggle(item.id);
             });
             
             const deleteButtonElement = document.createElement('button');
