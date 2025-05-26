@@ -13,12 +13,21 @@ class Main {
     this.todoListRenderer = container.resolve<TodoListRenderer>('TodoListRenderer');
     this.initialize();
   }
-  
+
+  /**
+   * Run the main initialization logic.
+   * @private
+   */
   private initialize(){
     console.log('Main class initialization logic');
     this.todoListRenderer.renderTodoList();
   }
-  
+
+  /**
+   * Registers the dependencies in the IoC container.
+   * Used without the @injectable decorator as it does not work here.
+   * @private
+   */
   private registerDependencies() {
     container.register('TodoRepository', { useClass: TodoRepository });
     container.register('TodoListRenderer', {
