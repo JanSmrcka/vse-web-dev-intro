@@ -1,4 +1,5 @@
 import { Todo } from "../types"
+import { todoService} from "../api/todos"
 class TodoList {
     todos: Todo[] = []
     
@@ -6,21 +7,26 @@ class TodoList {
 
     constructor(elementID: string){
         this.todoListElement = document.getElementById(elementID) as HTMLUListElement
+        this.loadTodos()
     }
     
-    addTodo(todoValue: string){
-        const newTodo:Todo = {
-            id: crypto.randomUUID(),
-            text: todoValue,
-            completed: false
-        }
+    async loadTodos(){
+        const newTodos = await todoService.fetchTodos()
+        this.todos = newTodos
+        this.render()
+    }
+
+    async addTodo(todoValue: string){
+        const newTodo = await todoService.createTodo(todoValue)
         this.todos.push(newTodo)
         this.render()
     }
 
-    removeTodo(id: string){
-        this.todos =  this.todos.filter((todo)=>(todo.id !== id))
-        this.render()
+    async removeTodo(id: string){
+        //this.todos =  this.todos.filter((todo)=>(todo.id !== id))
+        const deleteTodo = await todoService.removeTodo(id)
+        console.log(deleteTodo)
+        this.loadTodos()
     }
 
     toggle(id:string){
