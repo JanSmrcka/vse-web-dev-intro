@@ -4,6 +4,7 @@ import { todoService } from '../api/todos'
 class TodoList {
   todos: Todo[] = []
   todoListElement = document.getElementById('todo-list') as HTMLUListElement
+  isLoading: boolean = false
 
   constructor(elementId: string) {
     this.todoListElement = document.getElementById(elementId) as HTMLUListElement
@@ -12,11 +13,17 @@ class TodoList {
 
   async loadTodos() {
     try {
+      this.isLoading = true
+      this.render()
       const newTodos = await todoService.fetchTodos()
       this.todos = newTodos
+      this.isLoading = false
       this.render()
     } catch (error) {
       console.error(error)
+    } finally {
+      this.isLoading = false
+      this.render()
     }
   }
 
@@ -55,6 +62,11 @@ class TodoList {
   render() {
     this.todoListElement.innerHTML = ''
 
+    if (this.isLoading) {
+      this.todoListElement.appendChild(createLoadingSpinner())
+      return
+    }
+
     this.todos.forEach((item) => {
       const todoItemElement = document.createElement('li')
       const todoSpanElement = document.createElement('span')
@@ -81,6 +93,16 @@ class TodoList {
       this.todoListElement?.appendChild(todoItemElement)
     })
   }
+}
+
+function createLoadingSpinner() {
+  const container = document.createElement('div')
+  const spinner = document.createElement('div')
+  container.className = 'loading-container'
+  spinner.className = 'loading-spinner'
+
+  container.appendChild(spinner)
+  return container
 }
 
 export const todoList = new TodoList(`todo-list`)
