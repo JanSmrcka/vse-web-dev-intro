@@ -1,5 +1,5 @@
 import { todoService } from '../api/todos'
-import { Todo } from '../types'
+import { Todo } from '../Types'
 
 class TodoList {
   todos: Todo[] = []
