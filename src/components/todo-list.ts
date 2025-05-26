@@ -5,42 +5,63 @@ class TodoList {
     
     todoListElement
 
+    isLoading: boolean = false
+
     constructor(elementID: string){
         this.todoListElement = document.getElementById(elementID) as HTMLUListElement
         this.loadTodos()
     }
     
-    async loadTodos(){
+    private async loadTodos(){
         try {
+            this.isLoading = true
+            this.render()
             const newTodos = await todoService.fetchTodos()
+            this.isLoading = false
             this.todos = newTodos
             this.render()
         }
         catch(error){
             console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
         }
 
     }
 
     async addTodo(todoValue: string){
         try {
+            this.isLoading = true
+            this.render()
             const newTodo = await todoService.createTodo(todoValue)
+            this.isLoading = false
             this.todos.push(newTodo)
             this.render()
         }
         catch(error){
             console.error(error) 
+        } finally {
+            this.isLoading = false
+            this.render()
         }
     }
 
     async removeTodo(id: string){
         try {
-        const deleteTodo = await todoService.removeTodo(id)
-        console.log(deleteTodo)
-        this.todos =  this.todos.filter((todo)=>(todo.id !== id))
-        this.loadTodos()
+            this.isLoading = true
+            this.render()
+            const deleteTodo = await todoService.removeTodo(id)
+            console.log(deleteTodo)
+            this.todos =  this.todos.filter((todo)=>(todo.id !== id))
+            //this.loadTodos()
+            this.isLoading = false
+            this.render()
         } catch (error) {
             console.error(error)
+        } finally {
+            this.isLoading = false
+            this.render()
         }
     }
 
@@ -57,12 +78,25 @@ class TodoList {
         this.loadTodos()
     } catch (error){
         console.error(error)
+    } finally {
+        this.isLoading = false
+        this.render()
     }
     }
 
     render(){
         this.todoListElement.innerHTML = ''
 
+        if(this.isLoading === true && this.todos.length === 0){
+            this.todoListElement.appendChild(createLoadingSpinner())
+        }
+
+        if (this.isLoading){
+            this.todoListElement.classList.add('isLoading')
+        }
+        if (!this.isLoading){
+            this.todoListElement.classList.remove('isLoading')
+        }
         this.todos.forEach((item)=>{
             const todoItemElement = document.createElement("li")
             const todoSpanElement = document.createElement("span")
@@ -88,6 +122,15 @@ class TodoList {
             this.todoListElement?.appendChild(todoItemElement)
         })
     }
+}
+
+function createLoadingSpinner() {
+    const container = document.createElement("div")
+    const spinner = document.createElement("div")
+    container.className = "loading-container"
+    spinner.className = "loading-spinner"
+    container.appendChild(spinner)
+    return container
 }
 
 export const todoList = new TodoList("todo-list")
