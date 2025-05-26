@@ -67,8 +67,10 @@ class TodoList {
 
     async toggle(id:string, completed: boolean){
         try {
-        const toggleTodo = await todoService.toggle(id, completed)
-        this.todos = this.todos.map((todo)=>{
+            this.isLoading = true
+            this.render()
+            const toggleTodo = await todoService.toggle(id, completed)
+            this.todos = this.todos.map((todo)=>{
             if (todo.id === id){
                 return {...todo, completed: !todo.completed}
             }
@@ -76,6 +78,8 @@ class TodoList {
         })
         console.log(toggleTodo)
         this.loadTodos()
+        this.isLoading = false
+        this.render()
     } catch (error){
         console.error(error)
     } finally {
