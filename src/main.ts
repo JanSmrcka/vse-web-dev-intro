@@ -16,9 +16,17 @@ formElement.addEventListener('submit',handleFormSubmit)
 function renderTodos() {
     const todoListElement = document.getElementById('todo-list') as HTMLUListElement
     todoListElement.innerHTML = ''
+
     todos.forEach((value, index) => {
         const todoItemElement = document.createElement('li')
-        todoItemElement.innerHTML = value
+        const todoSpanElement = document.createElement("span")
+        todoSpanElement.innerHTML = value
+        const deleteButton = document.createElement("button")
+        deleteButton.innerHTML = 'delet'
+
+        todoItemElement.appendChild(todoSpanElement)
+        todoItemElement.appendChild(deleteButton)
+
         todoListElement?.appendChild(todoItemElement)
 
     })
