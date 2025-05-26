@@ -22,19 +22,23 @@ class TodoList {
         this.render();
     };
 
-    removeTodo(id: string) {
+    async removeTodo(id: number) {
+        await todoService.deleteTodo(id);
         this.todos = this.todos.filter((todo) => todo.id !== id);
         this.render();
     };
 
-    toggleTodo(id: string) {
+    async toggleTodo(id: number) {
+        const todo = this.todos.find((todo) => id === todo.id);
+        const newTodo = await todoService.toggleTodo(id, !todo?.completed);
+        
         this.todos = this.todos.map((todo) => {
             if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
+                return newTodo;
             }
             return todo;
         });
-        this.render();
+        this.loadTodos();
     };
 
     render() {
@@ -55,7 +59,8 @@ class TodoList {
             const deleteButtonElement = document.createElement('button');
             deleteButtonElement.innerHTML = 'Delete';
     
-            deleteButtonElement.addEventListener('click', () => {
+            deleteButtonElement.addEventListener('click', (e) => {
+                e.stopPropagation();
                 this.removeTodo(item.id);
             });
     

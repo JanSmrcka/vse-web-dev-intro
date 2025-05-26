@@ -37,4 +37,22 @@ export const todoService = {
         
         return handleResponse<Todo>(response);
     },
+
+    async deleteTodo(id: number) {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE',
+        });
+        return handleResponse(response);
+    },
+
+    async toggleTodo(id: number, completed: boolean) {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ completed }),
+        });
+        return handleResponse<Todo>(response);
+    },
 };
