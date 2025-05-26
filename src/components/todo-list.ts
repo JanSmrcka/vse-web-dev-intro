@@ -25,7 +25,6 @@ removeTodo(id: string){
         this.render()
 }
 
-
 toggle(id: string){
     this.todos = this.todos.map((todo) => {
           if (todo.id === id) {
@@ -36,8 +35,6 @@ toggle(id: string){
         console.log(this.todos)
         this.render()
 }
-
-
 
   render() {
     this.todoListElement.innerHTML = ''
