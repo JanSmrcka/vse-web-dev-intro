@@ -22,13 +22,13 @@ class TodoList {
         this.render()    
     }
 
-    async removeTodo(id: string) {
+    async removeTodo(id: number) {
         await todoService.deleteTodo(id)
         this.todos = this.todos.filter((todo) => todo.id !== id)
         this.render()
     }
 
-    async toggle(id: string, completed: boolean) {
+    async toggle(id: number, completed: boolean) {
         const todo = this.todos.find((todo) => id === todo.id)
         const newTodo = await todoService.toggleTodo(id, !todo?.completed)
 

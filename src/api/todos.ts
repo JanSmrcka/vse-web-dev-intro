@@ -39,7 +39,7 @@ export const todoService = {
         return handleResponse<Todo>(response)
     },
 
-    async deleteTodo(id: string) {
+    async deleteTodo(id: number) {
         const response = await fetch(`${API_URL}/${id}`, {
             method: "DELETE"
         })
@@ -47,7 +47,7 @@ export const todoService = {
         return response;
     },
 
-    async toggleTodo(id: string, completed: boolean) {
+    async toggleTodo(id: number, completed: boolean) {
 
         const response = await fetch(`${API_URL}/${id}`, {
             method: "PATCH",
