@@ -4,6 +4,11 @@ class TodoList {
     todos: Todo[] = []
     todoListElement = document.getElementById('todo-list') as HTMLUListElement
 
+
+constructor(elementId: string) {
+        this.todoListElement = document.getElementById(elementId) as HTMLUListElement;;
+    }
+
     addTodo (todoValue: string) {
     const newTodo: Todo = {
         id: crypto.randomUUID(),
@@ -14,6 +19,32 @@ class TodoList {
     this.render()
     }
 
+    removeTodo (todoId: string) {
+        this.todos = this.todos.filter((todo) => todo.id !== todoId)
+        this.render()
+    }
+
+    toggle(id: string) {
+                    this.todos = this.todos.map((todo)=> {
+                if (todo.id === id) {
+                    return { ...todo, completed: !todo.completed} //"..." znamená id: todo.id, text: todo.text, ...
+                }
+                return todo
+            })
+            console.log(this.todos)
+            this.render();
+    }
+    toggleTodo(id: string) {
+        this.todos = this.todos.map((todo) => {
+            if (todo.id === id) {
+                return { ...todo, completed: !todo.completed };
+            }
+            return todo;
+        });
+        this.render();
+    };
+
+
     render() {
     this.todoListElement.innerHTML = ''
 
@@ -22,36 +53,27 @@ class TodoList {
         const todoSpanElement = document.createElement("span")
         todoSpanElement.innerHTML = item.text
 
-        if (item.completed) {
-            todoItemElement.classList.add('completed')
-        }
-
-        todoItemElement.addEventListener('click', () => {
-            this.todos = this.todos.map((todo)=> {
-                if (todo.id === item.id) {
-                    return { ...todo, completed: !todo.completed} //"..." znamená id: todo.id, text: todo.text, ...
-                }
-                return todo
-            })
-            console.log(this.todos)
-            this.render();
-        })
-
-        const deleteButton = document.createElement("button")
-        deleteButton.innerHTML = 'delet'
-
-        deleteButton.addEventListener('click', () => {
-            this.todos = this.todos.filter((todo) => todo.id !== item.id)
-            this.render();
-        })
-
-        todoItemElement.appendChild(todoSpanElement)
-        todoItemElement.appendChild(deleteButton)
-
-        this.todoListElement?.appendChild(todoItemElement)
-
-    })
+if (item.completed) {
+                todoItemElement.classList.add('completed');
+            }
+    
+            todoSpanElement.addEventListener('click', () => {
+                this.toggleTodo(item.id);
+            });
+            
+            const deleteButtonElement = document.createElement('button');
+            deleteButtonElement.innerHTML = 'Delete';
+    
+            deleteButtonElement.addEventListener('click', () => {
+                this.removeTodo(item.id);
+            });
+    
+            todoItemElement.appendChild(todoSpanElement);
+            todoItemElement.appendChild(deleteButtonElement);
+            
+            this.todoListElement?.appendChild(todoItemElement);
+        });
     }
 }
 
-export const todoList = new TodoList()
+export const todoList = new TodoList(`todo-list`);
