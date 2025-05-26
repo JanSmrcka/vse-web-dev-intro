@@ -29,7 +29,11 @@ class TodoList {
 
   async addTodo(value: string) {
     try {
+      this.isLoading = true
+      this.render()
       const newTodo = await todoService.createTodos(value)
+      this.isLoading = false
+      this.render()
       this.todos.push(newTodo)
       this.render()
     } catch (e) {
@@ -41,7 +45,11 @@ class TodoList {
     try {
       this.todos = this.todos.map((todo) => {
         if (todo.id == id) {
+          this.isLoading = true
+          this.render()
           todoService.toggleTodo(todo.id, !todo.completed)
+          this.isLoading = false
+          this.render()
           return { ...todo, completed: !todo.completed }
         }
         return todo
@@ -52,12 +60,15 @@ class TodoList {
     }
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     try {
       this.todos = this.todos.filter((todo) => {
         return todo.id !== id
       })
-      todoService.deleteTodo(id)
+      this.isLoading = true
+      this.render()
+      await todoService.deleteTodo(id)
+      this.isLoading = false
       this.render()
     } catch (e) {
       console.error(e)
@@ -67,9 +78,15 @@ class TodoList {
   render() {
     this.todoListElement.innerHTML = ''
 
-    if (this.isLoading) {
+    if (this.isLoading && this.todos.length == 0) {
       this.todoListElement.appendChild(createLoadingSpinner())
       return
+    }
+    
+    if (this.isLoading) {
+      this.todoListElement.classList.add('isLoading')
+    } else {
+      this.todoListElement.classList.remove('isLoading')
     }
 
     this.todos.forEach((item) => {
