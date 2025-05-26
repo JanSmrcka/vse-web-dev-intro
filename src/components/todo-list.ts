@@ -29,14 +29,15 @@ class TodoList {
         this.loadTodos()
     }
 
-    toggle(id:string){
+    async toggle(id:string, completed: boolean){
         this.todos = this.todos.map((todo)=>{
             if (todo.id === id){
                 return {...todo, completed: !todo.completed}
             }
             return todo
         })
-        this.render()
+        const toggleTodo = await todoService.toggle(id, completed)
+        this.loadTodos()
     }
 
     render(){
@@ -52,7 +53,7 @@ class TodoList {
             }
     
             todoItemElement.addEventListener("click", ()=>{
-                this.toggle(item.id)
+                this.toggle(item.id, item.completed)
             })
             
             const deleteButton = document.createElement("button")

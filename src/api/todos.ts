@@ -41,5 +41,16 @@ export const todoService = {
             method: "DELETE"
         })
         return handleResponse(response)
+    },
+    async toggle(id: string, completed: boolean){
+        const body = {
+            completed: !completed
+        }
+        const response = await fetch(API_URL + "/" + id,{
+            method: "PATCH",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(body)
+        })
+        return handleResponse(response)        
     }
 }
