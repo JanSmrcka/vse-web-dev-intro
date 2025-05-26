@@ -4,6 +4,7 @@ import { todoService } from '../api/todos';
 class TodoList {
     todos: Todo[] = [];
     todoListElement: HTMLUListElement;
+    isLoading: boolean = false;
 
     //constructor to initialize the todo list element - works with different HTML form elements
     constructor(elementId: string) {
@@ -14,12 +15,18 @@ class TodoList {
     // Method to fetch todos from the API
     async loadTodos() {
         try {
+            this.isLoading = true;
+            this.render();
             const newTodos = await todoService.fetchTodos();
             this.todos = newTodos;
+            this.isLoading = false;
             this.render();
             //console.log("Todos loaded:", this.todos);
         } catch (error) {
             console.error("Error loading todos:", error);
+        } finally {
+            this.isLoading = false;
+            this.render();
         }
     };
 
@@ -60,6 +67,13 @@ class TodoList {
         // when there are no todos, display a message
         if (this.todos.length === 0) {
             this.todoListElement.innerHTML = "No todos yet!";
+            return;
+        }
+
+        // if loading, show loading spinner
+        if (this.isLoading) {
+            this.todoListElement.appendChild(createLoadingSpinner());
+            return;
         }
 
         this.todos.forEach((item) => {
@@ -93,5 +107,16 @@ class TodoList {
         });
     };
 }
+
+function createLoadingSpinner() {
+    const container = document.createElement("div");
+    const spinner = document.createElement("div");
+
+    container.className = "loading-container";
+    spinner.className = "loading-spinner";
+
+    container.appendChild(spinner);
+    return container;
+};
 
 export const todoList = new TodoList("todo-list");
