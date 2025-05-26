@@ -56,13 +56,11 @@ export class TodoRepository {
    */
   getAllTodos(): ITodo[] {
     const todos: ITodo[] = [];
-    console.log('All todos:');
 
     for (const todo of this.state) {
       todos.push(todo);
     }
-
-    console.log(todos);
+    
     return todos;
   }
 }
