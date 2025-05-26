@@ -3,47 +3,76 @@ import { Todo } from '../types'
 
 class TodoList {
   todos: Todo[] = []
-  todoListElement = document.getElementById('todo-list') as HTMLUListElement
 
-    constructor(elementId: string){
-        this.todoListElement = document.getElementById(elementId) as HTMLUListElement
-        this.loadTodos()
+  todoListElement
+
+  isLoading: boolean = false
+
+  constructor(elementId: string) {
+    this.todoListElement = document.getElementById(elementId) as HTMLUListElement
+    this.loadTodos()
+  }
+
+  async loadTodos() {
+    try {
+      this.isLoading = true
+      this.render()
+      const newTodos = await todoService.fetchTodos()
+      this.todos = newTodos
+    } catch (error) {
+      console.log(error)
+    } finally {
+      this.isLoading = false
+      this.render()
     }
+  }
 
-async loadTodos(){
-  const newTodos = await todoService.fetchTodos()
-  this.todos = newTodos
-  this.render()
-}
-
-
-async addTodo(todoValue: string) {
-  const newTodo = await todoService.createTodo(todoValue)
-  this.todos.push(newTodo)
-  this.render()
-}
+  async addTodo(todoValue: string) {
+    try {
+      const newTodo = await todoService.createTodo(todoValue)
+      this.todos.push(newTodo)
+      this.render()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   async removeTodo(id: number) {
-    await todoService.deleteTodo(id)
-    this.todos = this.todos.filter((todo) => todo.id !== id)
-        this.render()
-}
+    try {
+      await todoService.deleteTodo(id)
+      this.todos = this.todos.filter((todo) => todo.id !== id)
+      this.render()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   async toggle(id: number) {
     const todo = this.todos.find((todo) => id === todo.id)
     const newTodo = await todoService.toggleTodo(id, !todo?.completed)
 
-    this.todos = this.todos.map((todo) => {
-      if (todo.id === id) {
-        return newTodo
-      }
-      return todo
-    })
-    this.render()
+    try {
+      this.todos = this.todos.map((todo) => {
+        if (todo.id === id) {
+          return newTodo
+        }
+        return todo
+      })
+      this.render()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {
     this.todoListElement.innerHTML = ''
+
+    if (this.isLoading) {
+      this.todoListElement.appendChild(createLoadingSpinner())
+      {
+        return
+      }
+    }
 
     this.todos.forEach((item) => {
       const todoItemElement = document.createElement('li')
@@ -64,7 +93,6 @@ async addTodo(todoValue: string) {
       deleteButton.addEventListener('click', (e) => {
         e.stopPropagation()
         this.removeTodo(item.id)
-
       })
 
       todoItemElement.appendChild(todoSpanElement)
@@ -74,5 +102,14 @@ async addTodo(todoValue: string) {
   }
 }
 
+function createLoadingSpinner() {
+  const container = document.createElement('div')
+  const spinner = document.createElement('div')
 
-export const todoList = new TodoList("todo-list")
+  container.className = 'loading-container'
+  spinner.className = 'loading-spinner'
+  container.appendChild(spinner)
+  return container
+}
+
+export const todoList = new TodoList('todo-list')
