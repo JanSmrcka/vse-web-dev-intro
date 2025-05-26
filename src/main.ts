@@ -42,6 +42,8 @@ class Main {
    * @private
    */
   private registerHandlers() {
+    
+    // Register the form submission handler
     document.getElementById('todo-form')?.addEventListener('submit', (e: Event) => {
       e.preventDefault();
       const titleInput = (document.getElementById('new-todo-input') as HTMLInputElement).value.trim();
