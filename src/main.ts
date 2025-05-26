@@ -14,7 +14,7 @@ class Main {
     // Resolve the TodoListRenderer from the container
     this.todoListRenderer = container.resolve<TodoListRenderer>('TodoListRenderer');
     this.todoRepository = container.resolve<TodoRepository>('TodoRepository');
-    this.initialize();
+    this.initialize().then(() => console.log('Initialization complete'));
   }
 
   /**
@@ -23,7 +23,11 @@ class Main {
    */
   private async initialize(){
     this.registerHandlers();
-    this.todoListRenderer.renderTodoList(await this.todoRepository.getAllTodosCached());
+    this.todoListRenderer.renderTodoList(
+      await this.todoRepository.getAllTodosCached(),
+      (id) => { alert(`Updated ID ${id}`); },
+      (id) => { alert(`Updated ID ${id}`); },
+    );
   }
 
   /**
@@ -44,6 +48,8 @@ class Main {
     
     // Register the form submission handler
     document.getElementById('todo-form')?.addEventListener('submit', async (e: Event) => {
+      this.todoListRenderer.setLoadingState(true);
+      
       e.preventDefault();
       const titleInput = (document.getElementById('new-todo-input') as HTMLInputElement).value.trim();
       
@@ -57,7 +63,13 @@ class Main {
       };
       
       await this.todoRepository.upsertTodo(todo);
-      this.todoListRenderer.renderTodoList(await this.todoRepository.getAllTodosCached());
+      this.todoListRenderer.renderTodoList(
+        await this.todoRepository.getAllTodosCached(),
+        (id) => { alert(`Updated ID ${id}`); },
+        (id) => { alert(`Updated ID ${id}`); },
+      );
+
+      this.todoListRenderer.setLoadingState(false);
     });
   }
 }
