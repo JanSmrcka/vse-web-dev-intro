@@ -1,14 +1,27 @@
 const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
-const todos: string[] = []
+type Todo = {
+  id: string
+  text: string
+  completed: boolean
+}
+
+let todos: Todo[] = []
 
 function handleFormSubmit(e: Event) {
   e.preventDefault()
   const formData = new FormData(formElement)
   const todoValue = formData.get('todo-text') as string
-  todos.push(todoValue)
+
+  const newTodo: Todo = {
+    id: crypto.randomUUID(),
+    text: todoValue,
+    completed: false,
+  }
+
+  todos.push(newTodo)
   renderTodos()
-  console.log(todos)
+  formElement.reset()
 }
 
 formElement.addEventListener('submit', handleFormSubmit)
@@ -17,16 +30,37 @@ function renderTodos() {
   const todoListElement = document.getElementById('todo-list')!
   todoListElement.innerHTML = ''
 
-  todos.forEach((value, index) => {
-    const todoItemElement = document.createElement('li')
-    const todoSpanElement = document.createElement('span')
-    todoSpanElement.innerHTML = value
-    const todoDeleteButton = document.createElement('button')
+  todos.forEach((item) => {
+    const itemElement = document.createElement('li')
+    const itemSpanElement = document.createElement('span')
+    itemSpanElement.innerHTML = item.text
 
-    todoDeleteButton.innerHTML = 'delete'
+    if (item.completed) {
+      itemElement.classList.add('completed')
+    }
 
-    todoItemElement.appendChild(todoSpanElement)
-    todoItemElement.appendChild(todoDeleteButton)
-    todoListElement.appendChild(todoItemElement)
+    itemElement.addEventListener('click', () => {
+      todos = todos.map((todo) => {
+        if (todo.id == item.id) {
+          return { ...todo, completed: !todo.completed }
+        }
+        return todo
+      })
+      renderTodos()
+    })
+
+    const itemDeleteButton = document.createElement('button')
+    itemDeleteButton.innerHTML = 'delete'
+
+    itemDeleteButton.addEventListener('click', () => {
+      todos = todos.filter((todo) => {
+        return todo.id !== item.id
+      })
+      renderTodos()
+    })
+
+    itemElement.appendChild(itemSpanElement)
+    itemElement.appendChild(itemDeleteButton)
+    todoListElement.appendChild(itemElement)
   })
 }
