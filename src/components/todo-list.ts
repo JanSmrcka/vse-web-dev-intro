@@ -20,13 +20,8 @@ class TodoList {
     };
 
     // Method to add a new todo item
-    addTodo(todoValue: string) {
-        const newTodo: Todo = {
-            id: crypto.randomUUID(),
-            text: todoValue,
-            completed: false
-        };
-        this.todos.push(newTodo);
+    async addTodo(todoValue: string) {
+        await todoService.createTodo(todoValue);
         this.render();
     };
 
