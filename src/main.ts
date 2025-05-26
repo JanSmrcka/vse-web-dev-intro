@@ -21,10 +21,9 @@ class Main {
    * Run the main initialization logic.
    * @private
    */
-  private initialize(){
-    console.log('Main class initialization logic');
+  private async initialize(){
     this.registerHandlers();
-    this.todoListRenderer.renderTodoList(this.todoRepository.getAllTodos());
+    this.todoListRenderer.renderTodoList(await this.todoRepository.getAllTodosCached());
   }
 
   /**
@@ -44,21 +43,21 @@ class Main {
   private registerHandlers() {
     
     // Register the form submission handler
-    document.getElementById('todo-form')?.addEventListener('submit', (e: Event) => {
+    document.getElementById('todo-form')?.addEventListener('submit', async (e: Event) => {
       e.preventDefault();
       const titleInput = (document.getElementById('new-todo-input') as HTMLInputElement).value.trim();
       
       // Create a new todo item
       const todo: Todo = {
         id: null,
-        title: titleInput,
+        text: titleInput,
         updatedAt: new Date(),
         createdAt: new Date(),
         completed: false
       };
       
-      this.todoRepository.upsertTodo(todo);
-      this.todoListRenderer.renderTodoList(this.todoRepository.getAllTodos());
+      await this.todoRepository.upsertTodo(todo);
+      this.todoListRenderer.renderTodoList(await this.todoRepository.getAllTodosCached());
     });
   }
 }

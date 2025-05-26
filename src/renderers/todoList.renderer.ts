@@ -4,7 +4,11 @@ export class TodoListRenderer {
   
   renderTodoList(todos: Todo[]): void {
     const todoContainerElement = document.getElementById('todo-list');
-    todos = todos.reverse();
+
+    if (!Array.isArray(todos)) {
+      console.log('Invalid todos data. Expected an array.');
+      return;
+    }
     
     if (todos.length === 0) {
       console.log('No todos found.');
@@ -27,7 +31,7 @@ export class TodoListRenderer {
     const completedClass = todo.completed ? 'completed' : '';
     const element = document.createElement('li');
     element.innerHTML =  `<li class="${completedClass} todo-item" data-id="${todo.id}">
-                            <span>${todo.title}</span>
+                            <span>${todo.text}</span>
                             <button class="delete-todo">Delete</button>
                           </li>`
     
