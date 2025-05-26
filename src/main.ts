@@ -20,6 +20,7 @@ function handleFormSubmit(e: Event){
     }
     todos.push(newTodo)
     renderTodos()
+    formElement.reset()
     console.log(todos)
 }
 
