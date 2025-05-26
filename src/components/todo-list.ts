@@ -30,13 +30,14 @@ class TodoList {
     }
 
     async toggle(id:string, completed: boolean){
+
+        const toggleTodo = await todoService.toggle(id, completed)
         this.todos = this.todos.map((todo)=>{
             if (todo.id === id){
                 return {...todo, completed: !todo.completed}
             }
             return todo
         })
-        const toggleTodo = await todoService.toggle(id, completed)
         this.loadTodos()
     }
 

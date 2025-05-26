@@ -42,15 +42,15 @@ export const todoService = {
         })
         return handleResponse(response)
     },
-    async toggle(id: string, completed: boolean){
+    async toggle(id: string, updated_completed: boolean){
         const body = {
-            completed: !completed
+            completed: !updated_completed
         }
         const response = await fetch(API_URL + "/" + id,{
             method: "PATCH",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify(body)
         })
-        return handleResponse(response)        
+        return handleResponse<Todo>(response)        
     }
 }
