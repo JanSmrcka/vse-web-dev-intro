@@ -35,5 +35,26 @@ export const todoService = {
       )
     });
     return handleResponse<Todo>(response);
+  },
+
+  async deleteTodo(todoId: number){
+    const response = await fetch(API_URL + '/' +  todoId, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    return handleResponse<Todo>(response);
+  },
+
+  async toggleCompletion(todoId: number, state: boolean) {
+    const response = await fetch(API_URL + '/' + todoId, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ completed: state })
+    });
+    return handleResponse<Todo>(response);
   }
 }
