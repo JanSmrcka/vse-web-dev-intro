@@ -1,28 +1,62 @@
 const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
-const todos: string[] = []
+type Todo = {
+  id: string,
+  text: string,
+  completed: boolean
+}
+
+let todos: Todo[] = []
 
 formElement?.addEventListener('submit', (e: Event) => {
   e.preventDefault()
   const formData = new FormData(formElement)
   const todoValue = formData.get('todo-text') as string
-  todos.push(todoValue)
+
+  const newTodo: Todo = {
+    id: crypto.randomUUID(),
+    text: todoValue,
+    completed: false,
+  }
+
+  todos.push(newTodo)
   renderTodos()
-  console.log(todoValue)
+  formElement.reset()
 })
 
 function renderTodos() {
   const todoListElement = document.getElementById('todo-list') as HTMLUListElement
-  todoListElement.innerHTML=''
+  todoListElement.innerHTML = ''
 
-  todos.forEach((value)=>{
+  todos.forEach((item) => {
     const todoItemElement = document.createElement('li')
     const todoSpanElement = document.createElement('span')
+    todoSpanElement.innerHTML = item.text
+
+    if(item.completed){
+      todoItemElement.classList.add('completed')
+    }
+
     const deleteButtonElement = document.createElement('button')
     deleteButtonElement.innerHTML = 'Delete'
+
+    deleteButtonElement.addEventListener('click', () => {
+      todos = todos.filter((todo) => todo.id !== item.id)
+      renderTodos()
+    })
+
+    todoItemElement.addEventListener('click', () => {
+      todos = todos.map((todo)=>{
+        if(todo.id === item.id){
+          return {...todo, completed: !todo.completed}
+        }
+        return todo
+      })
+      renderTodos()
+    })
+
     todoItemElement.appendChild(todoSpanElement)
     todoItemElement.appendChild(deleteButtonElement)
-    todoSpanElement.innerHTML = value
     todoListElement?.appendChild(todoItemElement)
   })
 }
