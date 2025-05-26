@@ -1,3 +1,4 @@
+import { todoService } from "../api/todos";
 import { Todo } from "../types";
 
 class TodoList {
@@ -6,15 +7,16 @@ class TodoList {
 
   constructor(elemId: string) {
     this.todoListElem = (document.getElementById(elemId) as HTMLUListElement);
+    this.loadTodos();
   }
 
-  public addTodo(todoText: string) {
-    this.todos.push({
-      id: crypto.randomUUID(),
-      text: todoText,
-      isCompleted: false,
-    })
+  public async loadTodos() {
+    this.todos = await todoService.fetchTodos();
+  }
 
+  public async addTodo(todoText: string) {
+    const newTodo = await todoService.createTodo(todoText);;
+    this.todos = [...this.todos, newTodo]
     this.render();
   }
 
