@@ -1,38 +1,47 @@
+import { todoService } from "../api/todos"
 import {Todo} from "../types"
 
 class TodoList{
     todos: Todo[] = []
-
     todoListElement  
 
     constructor(elementId: string) {
         this.todoListElement = document.getElementById(elementId) as HTMLUListElement
+        this.loadTodos()
     }
 
-    addTodo(todoValue: string){
-        const newTodo:Todo = {
-            id: crypto.randomUUID(),
-            text: todoValue,
-            completed: false
-        }
+    async loadTodos() {
+        const newTodos = await todoService.fetchTodos()
+        this.todos = newTodos
+        this.render()
+    }
+
+    async addTodo(todoValue: string){
+        const newTodo = await todoService.createTodo(todoValue)
         this.todos.push(newTodo)
         this.render()
     }
+    
 
-    removeTodo(id:string){
+    async removeTodo(id: number){
+        await todoService.deleteTodo(id)
         this.todos = this.todos.filter((todo)=>todo.id !== id)
-            this.render()
-    }
-
-    toggle(id:string){
-        this.todos = this.todos.map((todo)=>{
-            if (todo.id == id) {
-                return {...todo, completed: !todo.completed}
-            }
-            return todo
-        })
         this.render()
     }
+
+    async toggle(id: number) {
+        const todo = this.todos.find((todo) => id === todo.id)
+        const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+    
+        this.todos = this.todos.map((todo) => {
+          if (todo.id === id) {
+            return newTodo
+          }
+          return todo
+        })
+        this.render()
+      }
+    
 
 
     render() {
@@ -55,7 +64,8 @@ class TodoList{
         const deleteButton = document.createElement("button")
         deleteButton.innerHTML = "delete"
 
-        deleteButton.addEventListener("click", ()=> {
+        deleteButton.addEventListener("click", (e)=> {
+            e.stopPropagation()
             this.removeTodo(item.id)
         })
 

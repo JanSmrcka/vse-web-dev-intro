@@ -102,7 +102,7 @@ For detailed information about JavaScript and TypeScript concepts used in this p
 This project uses a RESTful API for managing todos. The API is documented using Swagger UI:
 
 - [API Documentation](https://eli-workshop.vercel.app/api-docs) - Interactive API documentation
-- [Todos Endpoint](https://eli-workshop.vercel.app/api/todos) - Direct access to todos data
+- [Todos Endpoint](https://eli-workshop.vercel.app/api/users/:insisId/todos) - Direct access to todos data
 
 ## How to Work with This Repository
 
