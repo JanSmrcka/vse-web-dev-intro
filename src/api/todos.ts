@@ -33,5 +33,28 @@ export const todoService = {
     })
 
     return handleResponse<Todo>(response);
+  },
+  async deleteTodo(todoId: Todo['id']) {
+    const response = await fetch(`${API_URL}/${todoId}`, {
+      method: 'DELETE'
+    });
+
+    return handleResponse(response);
+  },
+  async toggleTodo(todoId: Todo['id'], isCompleted: Todo['completed']) {
+    const body = {
+      completed: isCompleted
+    }
+
+    console.log(body)
+    const response = await fetch(`${API_URL}/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    return handleResponse(response);
   }
 }
