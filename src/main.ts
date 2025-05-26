@@ -1,33 +1,16 @@
-const formElement = document.getElementById('todo-form')! as HTMLFormElement
+import { todoList } from './components/TodoList'
 
-const todos: Array<string> = []
+const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
 function handleFormSubmit(e: Event) {
   e.preventDefault()
   const formData = new FormData(formElement)
 
   const todoValue = formData.get('todo-text') as string
-  todos.push(todoValue)
-  renderTodos()
 
-  console.log('Current Todos:', todos)
+  todoList.addTodo(todoValue)
+
+  formElement.reset()
 }
 
-formElement?.addEventListener('submit', handleFormSubmit)
-
-function renderTodos() {
-  const todoListElement = document.getElementById('todo-list')! as HTMLUListElement
-  todoListElement.innerHTML = ''
-  todos.forEach((todo) => {
-    const todoItemElement = document.createElement('li')
-    const todoSpanElement = document.createElement('span')
-    todoSpanElement.innerHTML = todo
-    const deleteBtnElement = document.createElement('button')
-    deleteBtnElement.innerHTML = 'Delete'
-
-    todoItemElement.appendChild(todoSpanElement)
-    todoItemElement.appendChild(deleteBtnElement)
-
-    todoListElement.appendChild(todoItemElement)
-  })
-}
+formElement.addEventListener('submit', handleFormSubmit)
