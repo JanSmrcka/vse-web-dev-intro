@@ -1,3 +1,4 @@
+import { todoService } from '../api/todos'
 import { Todo } from '../types'
 
 class TodoList {
@@ -6,14 +7,17 @@ class TodoList {
 
   constructor(elementId: string) {
     this.todoListElement = document.getElementById(elementId)!
+    this.loadTodos()
   }
 
-  addTodo(value: string) {
-    const newTodo: Todo = {
-      id: crypto.randomUUID(),
-      text: value,
-      completed: false,
-    }
+  async loadTodos() {
+    const newTodos = await todoService.fetchTodos()
+    this.todos = newTodos
+    this.render()
+  }
+
+  async addTodo(value: string) {
+    const newTodo = await todoService.createTodos(value)
     this.todos.push(newTodo)
     this.render()
   }
