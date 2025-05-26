@@ -1,6 +1,6 @@
-import { Todo } from '../types'
+import { Todo } from '../Types'
 
-const API_URL = 'https://eli-workshop.vercel.app/api/users/xsmrj00/todos'
+const API_URL = 'https://eli-workshop.vercel.app/api/users/hosm10/todos'
 
 class ApiErorr extends Error {
   constructor(message: string) {
