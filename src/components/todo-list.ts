@@ -11,26 +11,41 @@ class TodoList {
     }
     
     async loadTodos(){
-        const newTodos = await todoService.fetchTodos()
-        this.todos = newTodos
-        this.render()
+        try {
+            const newTodos = await todoService.fetchTodos()
+            this.todos = newTodos
+            this.render()
+        }
+        catch(error){
+            console.error(error)
+        }
+
     }
 
     async addTodo(todoValue: string){
-        const newTodo = await todoService.createTodo(todoValue)
-        this.todos.push(newTodo)
-        this.render()
+        try {
+            const newTodo = await todoService.createTodo(todoValue)
+            this.todos.push(newTodo)
+            this.render()
+        }
+        catch(error){
+            console.error(error) 
+        }
     }
 
     async removeTodo(id: string){
-        //this.todos =  this.todos.filter((todo)=>(todo.id !== id))
+        try {
         const deleteTodo = await todoService.removeTodo(id)
         console.log(deleteTodo)
+        this.todos =  this.todos.filter((todo)=>(todo.id !== id))
         this.loadTodos()
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     async toggle(id:string, completed: boolean){
-
+        try {
         const toggleTodo = await todoService.toggle(id, completed)
         this.todos = this.todos.map((todo)=>{
             if (todo.id === id){
@@ -38,7 +53,11 @@ class TodoList {
             }
             return todo
         })
+        console.log(toggleTodo)
         this.loadTodos()
+    } catch (error){
+        console.error(error)
+    }
     }
 
     render(){
