@@ -1,4 +1,4 @@
-import { todoList } from "./components/todo-list"
+import { todoList } from './components/todo-list'
 
 const formElement = document.getElementById('todo-form') as HTMLFormElement
 todoList.loadTodos
@@ -12,4 +12,4 @@ function handleFormSubmit(e: Event) {
   formElement.reset()
 }
 
-formElement?.addEventListener("submit", handleFormSubmit) // Otaznik - pokud je element NULL, tak to projde a nespadne
+formElement?.addEventListener('submit', handleFormSubmit) // Otaznik - pokud je element NULL, tak to projde a nespadne
