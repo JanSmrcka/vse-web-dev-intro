@@ -4,7 +4,8 @@ import { todoService } from '../api/todos';
 class TodoList {
     todos: Todo[] = [];
     todoListElement: HTMLUListElement;
-    isLoading: boolean = false;
+    private isLoading: boolean = false;
+    private updatingList: boolean = false;
 
     //constructor to initialize the todo list element - works with different HTML form elements
     constructor(elementId: string) {
@@ -13,55 +14,71 @@ class TodoList {
     };
 
     // Method to fetch todos from the API
-    async loadTodos() {
+    private async loadTodos() {
         try {
-            this.isLoading = true;
-            this.render();
-            const newTodos = await todoService.fetchTodos();
-            this.todos = newTodos;
-            this.isLoading = false;
-            this.render();
+            if (!this.updatingList) {
+                this.isLoading = true;
+                this.render();
+            }
+            this.todos = await todoService.fetchTodos();
             //console.log("Todos loaded:", this.todos);
         } catch (error) {
             console.error("Error loading todos:", error);
         } finally {
-            this.isLoading = false;
+            if (!this.updatingList) {
+                this.isLoading = false;
+            }
             this.render();
         }
     };
 
     // Method to add a new todo item
-    async addTodo(todoValue: string) {
+    public async addTodo(todoValue: string) {
         try {
+            this.updatingList = true;
+            this.render();
             await todoService.createTodo(todoValue);
-            this.loadTodos();
+            await this.loadTodos();
         } catch (error) {
             console.error("Error adding todo:", error);
+        } finally {
+            this.updatingList = false;
+            this.render();
         }
     };
 
     // Method to remove a todo item by its ID
-    async removeTodo(todoId: string) {
+    private async removeTodo(todoId: string) {
         try {
+            this.updatingList = true;
+            this.render();
             await todoService.deleteTodo(todoId);
-            this.loadTodos();
+            await this.loadTodos();
         } catch (error) {
             console.error("Error removing todo:", error);
+        } finally {
+            this.updatingList = false;
+            this.render();
         }
     };
 
     // Method to toggle the completion status of a todo item
-    async toggle(todoId: string) {
+    private async toggle(todoId: string) {
         try {
+            this.updatingList = true;
+            this.render();
             await todoService.toggleTodo(todoId);
-            this.loadTodos();
+            await this.loadTodos();
         } catch (error) {
             console.error("Error toggling todo:", error);
+        } finally {
+            this.updatingList = false;
+            this.render();
         }
     };
 
     // Method to render the todo list
-    render() {
+    public render() {
         this.todoListElement.innerHTML = "";
 
         // when there are no todos, display a message
@@ -74,6 +91,13 @@ class TodoList {
         if (this.isLoading) {
             this.todoListElement.appendChild(createLoadingSpinner());
             return;
+        }
+
+        // if updating the list of todos, show pulse loading
+        if (this.updatingList) {
+            this.todoListElement.classList.add("isLoading");
+        } else {
+            this.todoListElement.classList.remove("isLoading");
         }
 
         this.todos.forEach((item) => {
