@@ -1,4 +1,5 @@
 import { Todo } from '../types.ts'
+import { todoService } from '../api/todos.ts'
 
 class TodoList {
   todos: Todo[] = [];
@@ -6,15 +7,18 @@ class TodoList {
 
   constructor (elementId: string) {
     this.todoListElement = document.getElementById(elementId)!;
+    this.loadTodos();
   }
 
-  addTodo(todoValue: string) {
-    const newTodo: Todo = {
-      id: crypto.randomUUID(),
-      text: todoValue,
-      completed: false
-    }
+  async loadTodos(){
+    const newTodos = await todoService.fetchTodos()
+    this.todos = newTodos;
+    this.render();
+    console.log(newTodos);
+  }
 
+  async addTodo(todoValue: string) {
+    const newTodo = await todoService.createTodo(todoValue)
     this.todos.push(newTodo)
     this.render();
   }
