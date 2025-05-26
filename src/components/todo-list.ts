@@ -81,12 +81,6 @@ class TodoList {
     public render() {
         this.todoListElement.innerHTML = "";
 
-        // when there are no todos, display a message
-        if (this.todos.length === 0) {
-            this.todoListElement.innerHTML = "No todos yet!";
-            return;
-        }
-
         // if loading, show loading spinner
         if (this.isLoading) {
             this.todoListElement.appendChild(createLoadingSpinner());
@@ -98,6 +92,12 @@ class TodoList {
             this.todoListElement.classList.add("isLoading");
         } else {
             this.todoListElement.classList.remove("isLoading");
+        }
+
+        // when there are no todos, display a message
+        if (this.todos.length === 0) {
+            this.todoListElement.innerHTML = "No todos yet!";
+            return;
         }
 
         this.todos.forEach((item) => {
