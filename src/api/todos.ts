@@ -21,11 +21,11 @@ export const todoService = {
     const response = await fetch(API_URL)
     return handleResponse<Todo[]>(response)
   },
+
   async createTodo(newTodo: string) {
     const body = {
       text: newTodo,
     }
-
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -35,6 +35,7 @@ export const todoService = {
     })
     return handleResponse<Todo>(response)
   },
+
   async deleteTodo(id: number) {
     const response = await fetch(`${API_URL}/${id}`, {
       method: 'DELETE',

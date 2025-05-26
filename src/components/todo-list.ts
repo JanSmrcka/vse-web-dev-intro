@@ -5,7 +5,6 @@ class TodoList {
   todos: Todo[] = []
   todoListElement = document.getElementById('todo-list') as HTMLUListElement
   isLoading: boolean = false
-  isPulsing: boolean = false
 
   constructor(elementId: string) {
     this.todoListElement = document.getElementById(elementId) as HTMLUListElement
