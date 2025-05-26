@@ -35,12 +35,27 @@ function renderTodos() {
         const todoSpanElement = document.createElement("span")
         todoSpanElement.innerHTML = item.text
 
+        if (item.completed) {
+            todoItemElement.classList.add('completed')
+        }
+
+        todoItemElement.addEventListener('click', () => {
+            todos = todos.map((todo)=> {
+                if (todo.id === item.id) {
+                    return { ...todo, completed: !todo.completed} //"..." znamená id: todo.id, text: todo.text, ...
+                }
+                return todo
+            })
+            console.log(todos)
+            renderTodos();
+        })
+
         const deleteButton = document.createElement("button")
         deleteButton.innerHTML = 'delet'
 
         deleteButton.addEventListener('click', () => {
             todos = todos.filter((todo) => todo.id !== item.id)
-            renderTodos
+            renderTodos();
         })
 
         todoItemElement.appendChild(todoSpanElement)
