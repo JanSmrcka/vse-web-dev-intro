@@ -12,7 +12,21 @@ class TodoList {
     this.loadTodos()
   }
 
-  async loadTodos() {
+  private async loadTodos() {
+    try {
+      this.isLoading = true
+      this.render()
+      const newTodos = await todoService.fetchTodos()
+      this.todos = newTodos
+    } catch (error) {
+      console.error(error)
+    } finally {
+      this.isLoading = false
+      this.render()
+    }
+  }
+
+  private async updateTodos() {
     try {
       this.isLoading = true
       this.render()
@@ -35,8 +49,8 @@ class TodoList {
     } catch (error) {
       console.log(error)
     } finally {
-      this.isLoading = false
       this.render()
+      this.updateTodos()
     }
   }
 
@@ -49,8 +63,8 @@ class TodoList {
     } catch (error) {
       console.error(error)
     } finally {
-      this.isLoading = false
       this.render()
+      this.updateTodos()
     }
   }
 
@@ -69,12 +83,12 @@ class TodoList {
     } catch (error) {
       console.error(error)
     } finally {
-      this.isLoading = false
       this.render()
+      this.updateTodos()
     }
   }
 
-  render() {
+  private render() {
     this.todoListElement.innerHTML = ''
 
     if (this.isLoading === true && this.todos.length === 0) {
@@ -82,10 +96,10 @@ class TodoList {
       return
     }
 
-    if (this.isLoading) {
+    if (this.isLoading === true) {
       this.todoListElement.classList.add('isLoading')
     }
-    if (!this.isLoading) {
+    if (this.isLoading === false) {
       this.todoListElement.classList.remove('isLoading')
     }
 
