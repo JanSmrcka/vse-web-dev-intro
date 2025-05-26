@@ -10,7 +10,6 @@ class ApiError extends Error {
 }
 
 const handleResponse = async <T>(response: Response): Promise<T> => {
-
     if(!response.ok) {
         throw new ApiError(`Api request failed ${response.status}`)
     }
