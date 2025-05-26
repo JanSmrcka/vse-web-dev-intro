@@ -6,7 +6,7 @@ type Todo = {
     completed: boolean
 }
 
-const todos: Todo[] = []
+let todos: Todo[] = []
 
 function handleFormSubmit(e: Event){
     e.preventDefault()
@@ -30,12 +30,18 @@ function renderTodos() {
     const todoListElement = document.getElementById('todo-list') as HTMLUListElement
     todoListElement.innerHTML = ''
 
-    todos.forEach((todo) => {
+    todos.forEach((item) => {
         const todoItemElement = document.createElement('li')
         const todoSpanElement = document.createElement("span")
-        todoSpanElement.innerHTML = todo.text
+        todoSpanElement.innerHTML = item.text
+
         const deleteButton = document.createElement("button")
         deleteButton.innerHTML = 'delet'
+
+        deleteButton.addEventListener('click', () => {
+            todos = todos.filter((todo) => todo.id !== item.id)
+            renderTodos
+        })
 
         todoItemElement.appendChild(todoSpanElement)
         todoItemElement.appendChild(deleteButton)
