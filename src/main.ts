@@ -1,23 +1,27 @@
-import { StorageManager } from './storage/storage.ts'
 import { ITodo } from './types/todo.type.ts'
+import { TodoRepository } from './repositories/todo.repository.ts'
 
 
-
-const todoStorage: StorageManager<any> = new StorageManager("TODOS");
+const todoHelper: TodoRepository = new TodoRepository();
 
 // Event handlers
 const initialize = () => {
-  const todo: ITodo = {
-    id: 1,
-    title: "Sample Todo",
+  // Initialize the application
+  console.log('Application initialized');
+
+  // Example of creating a new todo item
+  const newTodo: ITodo = {
+    id: null,
+    title: 'Learn TypeScript',
     completed: false,
     createdAt: new Date(),
     updatedAt: new Date()
   };
-  
-  // Save a todo item
-  todoStorage.setItem(todo.id.toString(), todo);
-  console.log(todoStorage);
+
+  // Here you would typically call a method to add the todo to your state management system
+  // For example: todoHelper.upsertTodo(newTodo);
+  todoHelper.upsertTodo(newTodo);
+  todoHelper.getAllTodos();
 };
 
 initialize();

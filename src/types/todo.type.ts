@@ -1,5 +1,5 @@
 export interface ITodo {
-  id: number;
+  id: string | null;
   title: string;
   completed: boolean;
   createdAt: Date;

@@ -2,20 +2,40 @@
  * Class used for handling localStorage operations.
  * @author Adam Mrózek
  */
-export class StorageManager<T> {
+export class StateManager<T> implements Iterable<T>{
   private storage: Record<string, T> = {};
   private readonly storageKey: string = 'DEFAULT_STORAGE_KEY';
   
   constructor(storageKey: string) {
     this.storageKey = storageKey;
-    this.loadStorage();
+    this.loadState();
   }
 
+
+  /**
+   * Iterates over the values in the storage.
+   * Allows the usage of for loops.
+   * There could be some drawbacks with this approach - it forces the storage to be an array-like structure.
+   */
+  [Symbol.iterator](): Iterator<T> {
+    const values = Object.values(this.storage);
+    let index = 0;
+    return {
+      next(): IteratorResult<T> {
+        if (index < values.length) {
+          return { value: values[index++], done: false };
+        } else {
+          return { value: undefined as any, done: true };
+        }
+      }
+    };
+  }
+  
   /**
    * Loads the current storage to localStorage.
    * @private
    */
-  private loadStorage(): void {
+  private loadState(): void {
     const storedData = localStorage.getItem(this.storageKey);
     if (storedData) {
       this.storage = JSON.parse(storedData);
@@ -26,7 +46,7 @@ export class StorageManager<T> {
    * Saves the current storage to localStorage.
    * @private
    */
-  private saveStorage(): void {
+  private saveState(): void {
     localStorage.setItem(this.storageKey, JSON.stringify(this.storage));
   }
 
@@ -41,7 +61,7 @@ export class StorageManager<T> {
     }
     
     this.storage[key] = value;
-    this.saveStorage();
+    this.saveState();
   }
   
   /**
