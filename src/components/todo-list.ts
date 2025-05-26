@@ -81,7 +81,6 @@ class TodoList {
       return
     }
     if (this.isLoading) {
-      console.log('pulsing')
       this.todoListElement.classList.add('isLoading')
     }
     if (!this.isLoading) {
