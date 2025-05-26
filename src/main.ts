@@ -1,6 +1,7 @@
 import { todoList } from "./components/todo-list"
 
 const formElement = document.getElementById('todo-form') as HTMLFormElement
+todoList.loadTodos
 
 function handleFormSubmit(e: Event) {
   e.preventDefault()

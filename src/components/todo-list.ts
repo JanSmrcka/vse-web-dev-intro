@@ -13,33 +13,31 @@ class TodoList {
     async loadTodos() {
         const newTodos = await todoService.fetchTodos()
         this.todos = newTodos
-        console.log(newTodos)
+        this.render()
     }
     
-    addTodo(todoValue: string) {
-        const newTodo: Todo = {
-            id: crypto.randomUUID(),
-            title: todoValue,
-            completed: false
-          }
-    
-          this.todos.push(newTodo)
-          this.render()    
+    async addTodo(todoValue: string) {
+        const newTodo = await todoService.createTodo(todoValue)
+        this.todos.push(newTodo)
+        this.render()    
     }
 
-    removeTodo(id: string) {
+    async removeTodo(id: string) {
+        await todoService.deleteTodo(id)
         this.todos = this.todos.filter((todo) => todo.id !== id)
         this.render()
     }
 
-    toggle(id: string) {
-        this.todos = this.todos.map((todo) => {
+    async toggle(id: string, completed: boolean) {
+        const todo = this.todos.find((todo) => id === todo.id)
+        const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
+        this. todos = this.todos.map((todo) => {
             if (todo.id === id) {
-                return {...todo, completed: !todo.completed}
+                return newTodo
             }
             return todo
         })
-        console.log(this.todos)
         this.render()
     }
     
@@ -50,14 +48,14 @@ class TodoList {
         this.todos.forEach((item) => {
             const todoItemElement = document.createElement('li')
             const todoSpanElement = document.createElement('span')
-            todoSpanElement.innerHTML = item.title
+            todoSpanElement.innerHTML = item.text
 
             if (item.completed) {
                 todoItemElement.classList.add("completed")
             }
 
             todoItemElement.addEventListener("click", () => {
-                this.toggle(item.id)
+                this.toggle(item.id, item.completed)
             })
 
             const deleteButton = document.createElement('button')
