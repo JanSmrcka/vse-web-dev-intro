@@ -43,6 +43,12 @@ class TodoList {
     // Method to render the todo list
     render() {
         this.todoListElement.innerHTML = "";
+
+        // when there are no todos, display a message
+        if (this.todos.length === 0) {
+            this.todoListElement.innerHTML = "No todos yet!";
+        }
+
         this.todos.forEach((item) => {
             const todoItemElement = document.createElement("li");
             const todoSpanElement = document.createElement("span");
@@ -51,6 +57,7 @@ class TodoList {
             //set completed class
             if (item.completed) {
                 todoItemElement.classList.add("completed");
+                this.todoListElement.classList.add("completed");
             };
 
             //item element event listener

@@ -117,7 +117,12 @@ li span {
 
 li.completed span {
   text-decoration: line-through;
-  color: var(--text-secondary);
+  color: black;
+}
+
+li.completed {
+  background-color: var(--success);
+  color: black;
 }
 
 li button {
@@ -166,9 +171,11 @@ footer {
   0% {
     opacity: 0.5;
   }
+
   50% {
     opacity: 0.7;
   }
+
   100% {
     opacity: 0.5;
   }
@@ -195,6 +202,7 @@ footer {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
