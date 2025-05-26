@@ -39,6 +39,8 @@ export class TodoRepository {
         throw new Error(`Todo with ID "${todo.id}" does not exist.`);
       }
     }
+    
+    console.log(`Todo with ID "${todo.id}" has been upserted.`);
   }
   
   /**
