@@ -38,7 +38,10 @@ export const todoService = {
     },
     async deleteTodo(id: number) {
         const response = await fetch(`${API_URL}/${id}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
                 })
         return handleResponse<Todo>(response)
         },

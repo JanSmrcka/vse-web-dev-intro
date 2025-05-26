@@ -25,7 +25,7 @@ async loadTodos() {
     }
 
     async removeTodo (id: number) {
-        const deleteTodo = await todoService.deleteTodo(id)
+        await todoService.deleteTodo(id)
         this.todos = this.todos.filter((todo) => todo.id !== id)
         this.render()
     }
@@ -43,7 +43,7 @@ async loadTodos() {
             console.log(this.todos)
             this.render();
     }
-    
+
     render() {
     this.todoListElement.innerHTML = ''
 
