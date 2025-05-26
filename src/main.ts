@@ -1,4 +1,4 @@
-import { todoList } from './components/TodoList'
+import { todoList } from './components/todoList'
 
 const formElement = document.getElementById('todo-form')! as HTMLFormElement
 
