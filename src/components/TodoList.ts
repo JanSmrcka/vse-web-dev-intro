@@ -29,10 +29,13 @@ class TodoList {
     this.render()
   }
 
-  toggle(id: number) {
+  async toggle(id: number) {
+    const todo = this.todos.find((todo) => todo.id === id)
+    const newTodo = await todoService.toggleTodo(id, !todo?.completed)
+
     this.todos = this.todos.map((todo) => {
       if (todo.id === id) {
-        return { ...todo, completed: !todo.completed }
+        return newTodo
       }
       return todo
     })
