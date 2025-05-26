@@ -22,26 +22,21 @@ class TodoList {
     // Method to add a new todo item
     async addTodo(todoValue: string) {
         await todoService.createTodo(todoValue);
+        this.loadTodos();
         this.render();
     };
 
     // Method to remove a todo item by its ID
-    removeTodo(todoId: string) {
-        this.todos = this.todos.filter((todo) => todo.id !== todoId);
+    async removeTodo(todoId: string) {
+        await todoService.deleteTodo(todoId);
+        this.loadTodos();
         this.render();
     };
 
     // Method to toggle the completion status of a todo item
-    toggle(todoId: string) {
-        this.todos = this.todos.map((todo) => {
-            if (todo.id === todoId) {
-                return {
-                    ...todo,
-                    completed: !todo.completed
-                }
-            };
-            return todo;
-        });
+    async toggle(todoId: string) {
+        await todoService.toggleTodo(todoId);
+        this.loadTodos();
         this.render();
     }
 
@@ -74,7 +69,8 @@ class TodoList {
             deleteButton.innerHTML = "Delete";
 
             //delete button event listener
-            deleteButton.addEventListener("click", () => {
+            deleteButton.addEventListener("click", (e: Event) => {
+                e.stopPropagation();
                 this.removeTodo(item.id);
             });
 

@@ -20,6 +20,10 @@ const handleResponse = async <T>(response: Response): Promise<T> => {
 
 // fetching todos from the API
 export const todoService = {
+    async getTodo(todoId: string) {
+        const response = await fetch(API_URL + "/" + todoId);
+        return handleResponse<Todo>(response);
+    },
     // Fetching todos from the API
     async fetchTodos() {
         const response = await fetch(API_URL);
@@ -38,5 +42,29 @@ export const todoService = {
             body: JSON.stringify(body),
         });
         return handleResponse<Todo>(response);
+    },
+    async deleteTodo(todoId: string) {
+        const response = await fetch(API_URL + "/" + todoId, {
+            method: "DELETE",
+        })
+        return handleResponse<void>(response);
+    },
+    async toggleTodo(todoId: string) {
+        const todoGet = await this.getTodo(todoId);
+        let completedStatus: boolean = false;
+        if (!todoGet.completed) {
+            completedStatus = true;
+        }
+        const body = {
+            completed: completedStatus
+        };
+        const response = await fetch(API_URL + "/" + todoId, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body),
+        })
+        return handleResponse<void>(response);
     },
 };
