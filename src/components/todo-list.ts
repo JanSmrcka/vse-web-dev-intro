@@ -28,7 +28,7 @@ class TodoList {
         this.render()
     }
 
-    async toggle(id: number, completed: boolean) {
+    async toggle(id: number) {
         const todo = this.todos.find((todo) => id === todo.id)
         const newTodo = await todoService.toggleTodo(id, !todo?.completed)
 
@@ -55,7 +55,7 @@ class TodoList {
             }
 
             todoItemElement.addEventListener("click", () => {
-                this.toggle(item.id, item.completed)
+                this.toggle(item.id)
             })
 
             const deleteButton = document.createElement('button')
