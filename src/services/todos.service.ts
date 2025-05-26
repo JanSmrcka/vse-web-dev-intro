@@ -17,4 +17,8 @@ export const TodosService  = {
   async getById(id: number) {
     return axios.get('', { params: { id } });
   },
+  
+  async deleteTodo(id: number) {
+    return axios.delete(`/${id}`);
+  }
 };

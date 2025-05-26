@@ -14,6 +14,17 @@ export class TodoRepository {
     this.cache = new CacheManager();
   }
   
+  public async deleteTodo(id: number): Promise<void> {
+    // Delete the todo item from the server
+    await TodosService.deleteTodo(id);
+    
+    // Invalidate the cache for the specific todo item
+    this.cache.invalidate(getCacheKey(CacheEnum.Todo, id));
+    
+    // Optionally, invalidate the entire todo cache
+    this.cache.invalidate(getCacheKey(CacheEnum.Todo));
+  }
+  
   /**
    * Adds a new todo item to the state.
    * @param todo The todo item to add.

@@ -37,16 +37,16 @@ export class TodoListRenderer {
     todos.forEach(t => {
       const renderedTodo = this.decorateTodoItem(t);
       
-      renderedTodo.getElementsByClassName("delete-todo")[0].addEventListener('click', (e) => {
+      renderedTodo.getElementsByClassName("delete-todo")[0].addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        deleteCallback(t.id as number);
+        deleteCallback(t.id as number)
       });
 
-      renderedTodo.getElementsByClassName("edit-todo")[0].addEventListener('click', (e) => {
+      renderedTodo.getElementsByClassName("edit-todo")[0].addEventListener('click', async (e) => {
         e.preventDefault();
         e.stopPropagation();
-        editCallback(t.id as number);
+        editCallback(t.id as number)
       });
       
       todoContainerElement?.appendChild(renderedTodo);

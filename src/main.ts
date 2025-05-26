@@ -64,11 +64,18 @@ class Main {
       this.todoListRenderer.setLoadingState(false);
     });
   }
-  
+
+  /**
+   * Trigger the rendering of the todo list.
+   * @private
+   */
   private async render() {
     this.todoListRenderer.renderTodoList(
       await this.todoRepository.getAllTodosCached(),
-      (id) => { alert(`Updated ID ${id}`); },
+      (id) => {
+        // TODO: Implement the delete logic and fix it.. it does not refresh the list
+        this.todoRepository.deleteTodo(id).then(() => this.render());
+      },
       (id) => { alert(`Updated ID ${id}`); },
     );
   }
