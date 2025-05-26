@@ -1,4 +1,5 @@
 import { Todo } from '../types';
+import { todoService } from '../api/todos';
 
 class TodoList {
     todos: Todo[] = [];
@@ -7,6 +8,15 @@ class TodoList {
     //constructor to initialize the todo list element - works with different HTML form elements
     constructor(elementId: string) {
         this.todoListElement = document.getElementById(elementId) as HTMLUListElement;
+        this.loadTodos();
+    };
+
+    // Method to fetch todos from the API
+    async loadTodos() {
+        const newTodos = await todoService.fetchTodos();
+        this.todos = newTodos;
+        this.render();
+        //console.log("Todos loaded:", this.todos);
     };
 
     // Method to add a new todo item
