@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seznam úkolů</title>
-    <link rel="stylesheet" href="./src/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>My Todo List</h1>
-        <p class="subtitle">Add your tasks</p>
-      </header>
-      <main>
-        <form id="todo-form">
-          <div class="input-group">
-            <input name="todo-text" id="new-todo-input" placeholder="What needs to be done?" autocomplete="off" />
-            <button type="submit" id="add-btn">Add</button>
-          </div>
-        </form>
-        <div class="todo-container">
-          <ul id="todo-list">
-            <li class="todo-item">
-              <span class="todo-text">Example Task</span>
-              <button class="delete-btn">Delete</button>
-            </li>
-            <li class="todo-item">
-              <span class="todo-text">Example Task 2</span>
-              <button class="delete-btn">Delete</button>
-            </li>
-          </ul>
-        </div>
-      </main>
 
-      <footer>
-        <p>Click on a task to mark it as completed</p>
-      </footer>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seznam úkolů</title>
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>My Todo List</h1>
+      <p class="subtitle">Add your tasks</p>
+    </header>
+    <main>
+      <form id="todo-form">
+        <div class="input-group">
+          <input name="todo-text" id="new-todo-input" placeholder="What needs to be done?" autocomplete="off" />
+          <button type="submit" id="add-btn">Add</button>
+        </div>
+      </form>
+      <div class="todo-container">
+        <ul id="todo-list">
+          <li class="todo-item">
+            <span class="todo-text">Example Task</span>
+            <button class="delete-btn">Delete</button>
+          </li>
+          <li class="todo-item">
+            <span class="todo-text">Example Task 2</span>
+            <button class="delete-btn">Delete</button>
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      <p>Click on a task to mark it as completed</p>
+    </footer>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
